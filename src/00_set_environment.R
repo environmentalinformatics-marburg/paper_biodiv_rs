@@ -11,11 +11,19 @@ path_plots <- paste0(path_data, "plots/")
 path_releves <- paste0(path_data, "releves/")
 path_re <- paste0(path_data, "rapideye/")
 path_rdata <- paste0(path_data, "rdata/")
+path_met_a <- paste0(path_data, "met_a/")
+path_met_m <- paste0(path_data, "met_m/")
 path_temp <- paste0(path_data, "temp/")
 path_output <- paste0(path_data, "output/")
 
 
 # Set libraries ----------------------------------------------------------------
+library(biodivTools)
+library(doParallel)
+library(grid)
+library(gridExtra)
+library(gpm)
+library(lavaan)
 library(rgeos)
 library(ggplot2)
 library(mapview)
@@ -23,4 +31,14 @@ library(raster)
 library(rgdal)
 library(satellite)
 library(satelliteTools)
+library(semPlot)
 library(sp)
+
+# Other settings ---------------------------------------------------------------
+rasterOptions(tmpdir = path_temp)
+
+saga_cmd <- "C:/OSGeo4W64/apps/saga/saga_cmd.exe "
+# initOTB("C:/OSGeo4W64/bin/")
+initOTB("C:/OSGeo4W64/OTB-5.8.0-win64/OTB-5.8.0-win64/bin/")
+
+
