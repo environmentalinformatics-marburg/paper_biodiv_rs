@@ -6,6 +6,7 @@ if(Sys.info()["sysname"] == "Windows"){
 }
 
 path_data <- paste0(filepath_base, "data/")
+path_forest <- paste0(path_data, "forest/")
 path_lui <- paste0(path_data, "lui/")
 path_plots <- paste0(path_data, "plots/")
 path_releves <- paste0(path_data, "releves/")
@@ -27,6 +28,7 @@ library(lavaan)
 library(rgeos)
 library(ggplot2)
 library(mapview)
+library(metTools)
 library(raster)
 library(rgdal)
 library(satellite)

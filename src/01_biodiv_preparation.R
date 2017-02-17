@@ -50,11 +50,11 @@ if(compute){
   lui$EP <- substr(lui$EP.Plotid, 1, 3)
 
   vegrel0815_div <- merge(vegrel0815_div, lui, by.x = c("EPID", "Year"),
-                    by.y = c("EP.Plotid", "year"))
+                    by.y = c("EP.Plotid", "year"), all.x = TRUE)
   vegrel14 <- merge(vegrel14, lui, by.x = c("EPID", "Year"),
-                    by.y = c("EP.Plotid", "year"))
+                    by.y = c("EP.Plotid", "year"), all.x = TRUE)
   vegrel15 <- merge(vegrel15, lui, by.x = c("EPID", "Year"),
-                    by.y = c("EP.Plotid", "year"))
+                    by.y = c("EP.Plotid", "year"), all.x = TRUE)
 
   saveRDS(vegrel0815_div, file = paste0(path_rdata, "vegrel0815_div.rds"))
   saveRDS(vegrel14, file = paste0(path_rdata, "vegrel14.rds"))
@@ -63,4 +63,26 @@ if(compute){
   vegrel0815_div <- readRDS(file = paste0(path_rdata, "vegrel0815_div.rds"))
   vegrel14 <- readRDS(file = paste0(path_rdata, "vegrel14.rds"))
   vegrel15 <- readRDS(file = paste0(path_rdata, "vegrel15.rds"))
+}
+
+
+# Read stand structural attributes and SMI data --------------------------------
+if(compute){
+  ssa <- readBExpStandStruc(paste0(
+    path_forest,
+    "20106_Forest_EP_Stand_structural_attributes_core_SSA_1.2.2/",
+    "20106.txt"))
+
+  smi <- readBExpSMI(
+    paste0(path_forest,
+           "17746_Forest_EP_SMI_Silvicultural_management_intensity_index_1.2.2/",
+           "17746.txt"))
+
+  sdiv <- merge(smi, ssa)
+  sdiv$SMId <- as.numeric(as.character(sdiv$SMId))
+  sdiv$SMIr <- as.numeric(as.character(sdiv$SMIr))
+  sdiv$SMI <- as.numeric(as.character(sdiv$SMI))
+  saveRDS(sdiv, file = paste0(path_rdata, "sdiv.rds"))
+} else {
+  sdiv <- readRDS(file = paste0(path_rdata, "sdiv.rds"))
 }

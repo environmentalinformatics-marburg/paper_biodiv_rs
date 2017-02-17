@@ -26,7 +26,7 @@ if(compute){
   fns <- c("polyAlbEp.shp", "polyHaiEp.shp", "polySchEp.shp")
   poly <- lapply(seq(length(fns)), function(i){
     poly <- readBExpPoly(shp = paste0(path_plots, fns[i]), crs = crs(re[[i]]))
-    poly[grepl("EG", poly@data$EP),]
+    # poly[grepl("EG", poly@data$EP),]
   })
   names(poly) <- c("Alb", "Hai", "Sch")
   saveRDS(poly, file = paste0(path_rdata, "poly.rds"))
@@ -167,11 +167,11 @@ if(compute){
   ref_05 <- readRDS(ref[5])
   ref_06 <- readRDS(ref[6])
   
-  ref_AEG <- cbind(ref_01[[1]], ref_02[[1]], ref_03[[1]], ref_04)
-  ref_HEG <- cbind(ref_01[[2]], ref_02[[2]], ref_03[[2]], ref_05)
-  ref_SEG <- cbind(ref_01[[3]], ref_02[[3]], ref_03[[3]], ref_06)
+  ref_AE <- cbind(ref_01[[1]], ref_02[[1]], ref_03[[1]], ref_04)
+  ref_HE <- cbind(ref_01[[2]], ref_02[[2]], ref_03[[2]], ref_05)
+  ref_SE <- cbind(ref_01[[3]], ref_02[[3]], ref_03[[3]], ref_06)
   
-  ref <- list(AEG=ref_AEG, HEG=ref_HEG, SEG=ref_SEG)
+  ref <- list(AE=ref_AE, HE=ref_HE, SE=ref_SE)
   saveRDS(ref, paste0(path_rdata, "re_predictors.rds"))
 }
 
