@@ -11,7 +11,6 @@ compute <- TRUE
 if(compute){
   veg_re_f_gpm_indv <- readRDS(file = paste0(path_rdata, "veg_re_f_gpm_indv.rds"))
   
-  veg_re_f_gpm_indv <- list()
   for(be in names(veg_re_f_gpm_indv)){
     cl <- makeCluster(detectCores())
     registerDoParallel(cl)
@@ -27,11 +26,12 @@ if(compute){
                           var_selection = "indv",
                           filepath_tmp = path_temp)
     saveRDS(act_gpm, file = paste0(path_rdata, "veg_re_f_gpm_indv_", be, ".rds"))
+    
     veg_re_f_gpm_indv[[be]] <- act_gpm
   }
-  saveRDS(veg_re_f_gpm_indv, file = paste0(path_rdata, "veg_re_f_gpm_indv.rds"))
+  saveRDS(veg_re_f_gpm_indv, file = paste0(path_rdata, "veg_re_f_gpm_indv_model.rds"))
 } else {
-  veg_re_f_gpm_indv <- readRDS(file = paste0(path_results, "veg_re_f_gpm_indv.rds"))
+  veg_re_f_gpm_indv <- readRDS(file = paste0(path_results, "veg_re_f_gpm_indv_model.rds"))
 }
 
 
