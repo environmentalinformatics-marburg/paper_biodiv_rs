@@ -11,6 +11,7 @@ compute <- TRUE
 if(compute){
   veg_re_g_gpm_indv <- readRDS(file = paste0(path_rdata, "veg_re_g_gpm_indv.rds"))
   
+  veg_re_g_gpm_indv <- list()
   for(be in names(veg_re_g_gpm_indv)){
     cl <- makeCluster(detectCores())
     registerDoParallel(cl)
@@ -25,23 +26,25 @@ if(compute){
                           cv_nbr = 5,
                           var_selection = "indv",
                           filepath_tmp = path_temp)
-    saveRDS(act_gpm, file = paste0(path_results, "veg_re_g_gpm_indv_model_", be, ".rds"))
+    saveRDS(act_gpm, file = paste0(path_rdata, "veg_re_g_gpm_indv_", be, ".rds"))
+    veg_re_g_gpm_indv[[be]] <- act_gpm
   }
+  saveRDS(veg_re_g_gpm_indv, file = paste0(path_rdata, "veg_re_g_gpm_indv.rds"))
 } else {
-  adf_rs_gpm <- readRDS(file = paste0(path_results, "veg_re_g_gpm_indv_model_", be, ".rds"))
+  veg_re_g_gpm_indv <- readRDS(file = paste0(path_results, "veg_re_g_gpm_indv.rds"))
 }
 
 
-var_imp <- compVarImp(adf_clim_g_gpm@model$pls_rfe, scale = FALSE)
+var_imp <- compVarImp(veg_re_g_gpm_indv@model$pls_rfe, scale = FALSE)
 
-var_imp_scale <- compVarImp(adf_clim_g_gpm@model$pls_rfe, scale = TRUE)
+var_imp_scale <- compVarImp(veg_re_g_gpm_indv@model$pls_rfe, scale = TRUE)
 
 var_imp_plot <- plotVarImp(var_imp)
 
 var_imp_heat <- plotVarImpHeatmap(var_imp_scale, xlab = "Species", ylab = "Band")
 
-tstat <- compRegrTests(adf_clim_g_gpm@model$pls_rfe)
+tstat <- compRegrTests(veg_re_g_gpm_indv@model$pls_rfe)
 
 aggregate(tstat$r_squared, by = list(tstat$model_response), mean)
 
-plotModelCV(adf_clim_g_gpm@model$pls_rfe[[1]][[2]]$model)
+plotModelCV(veg_re_g_gpm_indv@model$pls_rfe[[1]][[2]]$model)
