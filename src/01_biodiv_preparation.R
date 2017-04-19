@@ -1,6 +1,6 @@
 # Set path ---------------------------------------------------------------------
 if(Sys.info()["sysname"] == "Windows"){
-  source("D:/active/exploratorien/project_biodiv_rs/src/00_set_environment.R")
+  source("C:/Users/tnauss/permanent/plygrnd/exploratorien/project_biodiv_rs/src/00_set_environment.R")
 } else {
   source("/media/permanent/active/exploratorien/project_biodiv_rs/src/00_set_environment.R")
 }
@@ -39,11 +39,11 @@ if(compute){
 # Read LUI data ----------------------------------------------------------------
 if(compute){
   lui_glb <- readBExpLUI(
-    paste0(path_lui, "LUI_glob_sep_23.12.2016+104549_standardized.txt"))
+    paste0(path_lui, "LUI_glob_sep_19.04.2017+163706_standardized.txt"))
   colnames(lui_glb)[3:6] <- paste0(colnames(lui_glb)[3:6], "_glb")
 
   lui_reg <- readBExpLUI(
-    paste0(path_lui, "LUI_reg_sep_23.12.2016+103914_standardized.txt"))
+    paste0(path_lui, "LUI_reg_sep_19.04.2017+163738_standardized.txt"))
   colnames(lui_reg)[3:6] <- paste0(colnames(lui_reg)[3:6], "_reg")
 
   lui <- merge(lui_glb, lui_reg)

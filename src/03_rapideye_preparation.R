@@ -174,5 +174,3 @@ if(compute){
   ref <- list(AE=ref_AE, HE=ref_HE, SE=ref_SE)
   saveRDS(ref, paste0(path_rdata, "re_predictors.rds"))
 }
-
-

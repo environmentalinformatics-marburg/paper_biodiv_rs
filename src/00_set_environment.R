@@ -1,6 +1,6 @@
 # Set path ---------------------------------------------------------------------
 if(Sys.info()["sysname"] == "Windows"){
-  filepath_base <- "D:/active/exploratorien/"
+  filepath_base <- "C:/Users/tnauss/permanent/plygrnd/exploratorien/"
 } else {
   filepath_base <- "/media/permanent/active/exploratorien/"
 }
