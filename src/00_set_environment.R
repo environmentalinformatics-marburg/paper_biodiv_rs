@@ -19,7 +19,7 @@ path_output <- paste0(path_data, "output/")
 
 
 # Set libraries ----------------------------------------------------------------
-library(biodivTools)
+library(biodivTools) # devtools::install_github("environmentalinformatics-marburg/biodivTools")
 library(doParallel)
 library(grid)
 library(gridExtra)
@@ -28,11 +28,11 @@ library(lavaan)
 library(rgeos)
 library(ggplot2)
 library(mapview)
-library(metTools)
+library(metTools)  # devtools::install_github("environmentalinformatics-marburg/metTools")
 library(raster)
 library(rgdal)
 library(satellite)
-library(satelliteTools)
+library(satelliteTools)  # devtools::install_github("environmentalinformatics-marburg/satelliteTools")
 library(semPlot)
 library(sp)
 
