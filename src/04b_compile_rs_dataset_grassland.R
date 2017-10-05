@@ -1,6 +1,6 @@
 # Set path ---------------------------------------------------------------------
 if(Sys.info()["sysname"] == "Windows"){
-  source("D:/active/exploratorien/project_biodiv_rs/src/00_set_environment.R")
+  source("C:/Users/tnauss/permanent/plygrnd/exploratorien/project_biodiv_rs/src/00_set_environment.R")
 } else {
   source("/media/permanent/active/exploratorien/project_biodiv_rs/src/00_set_environment.R")
 }
@@ -37,8 +37,34 @@ if(compute){
   veg_re_g <- readRDS(paste0(path_rdata, "veg_re_g.rds"))
 }
 
-# Prepare gpm data set used for remote sensing prediction study ----------------
 
+# Group plots into areas -------------------------------------------------------
+poly <- readRDS(file = paste0(path_rdata, "poly.rds"))
+
+for(i in seq(length(poly))){
+  grld <- coordinates(poly[[i]][poly[[i]]@data$type=="Grld",])
+  grld_clust <- hclust(dist(grld))
+  grld_cuts <- cutree(grld_clust, 4)
+  poly[[i]]@data$SpatialCluster <- NA
+  poly[[i]]@data$SpatialCluster[poly[[i]]@data$type=="Grld"] <- grld_cuts
+}
+table(poly[[i]]@data$SpatialCluster)
+
+grld <- poly[[i]][poly[[i]]@data$type=="Grld",]
+plot(grld)
+
+plot(spsample(grld, type = "naligned", n = 10))
+plot(spsample(extent(grld), 10, type = "regular"))
+
+
+grd <- raster(grld, nrows = 3, ncols = 3)
+grd_poly <- rasterToPolygons(grd)
+plot(grd_poly)
+mapview(grd_poly) + grld
+
+
+
+# Prepare gpm data set used for remote sensing prediction study ----------------
 belc <- c("AEG", "HEG", "SEG")
 veg_re_g_gpm_indv <- lapply(belc, function(b){
   act_veg_re_g <- veg_re_g[veg_re_g$g_belc == b, ]
