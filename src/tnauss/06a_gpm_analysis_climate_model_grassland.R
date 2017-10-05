@@ -77,3 +77,5 @@ ggplot(data = stats_mod[stats_mod$response %in% mr, ], aes(x = response, y = r_s
   geom_point(data = stats[stats$model_response %in% mr, ], aes(x = model_response, y = r_squared, color = be)) +
   labs(title = "LUI & meteorology", x = NULL, y = "R squared", fill = "Expl") + 
   guides(color=FALSE)
+
+

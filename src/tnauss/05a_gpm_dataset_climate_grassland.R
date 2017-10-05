@@ -15,15 +15,15 @@ if(compute){
   registerDoParallel(cl)
   
   adf_clim_g_gpm <- trainModel(x = adf_clim_g_gpm,
-                               n_var = NULL, 
-                               mthd = "pls",
-                               mode = "rfe",
-                               seed_nbr = 11, 
-                               cv_nbr = 5,
-                               var_selection = "indv",
-                               response_nbr = c(1, 2, 3),
-                               resample_nbr = c(1, 2),
-                               filepath_tmp = path_temp)
+                           n_var = NULL, 
+                           mthd = "pls",
+                           mode = "rfe",
+                           seed_nbr = 11, 
+                           cv_nbr = 5,
+                           var_selection = "indv",
+                           response_nbr = c(1, 2, 3),
+                           resample_nbr = c(1, 2),
+                           filepath_tmp = path_temp)
   saveRDS(adf_rs_gpm, file = paste0(path_rdata, "adf_rs_gpm_trainModel.rds"))
 } else {
   adf_rs_gpm <- readRDS(file = paste0(path_results, "adf_rs_gpm_trainModel.rds"))
