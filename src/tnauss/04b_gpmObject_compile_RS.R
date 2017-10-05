@@ -35,7 +35,6 @@ if(compute){
 }
 
 # Prepare gpm data set used for remote sensing prediction study ----------------
-
 belc <- c("AEG", "HEG", "SEG")
 veg_re_g_gpm_indv <- lapply(belc, function(b){
   act_veg_re_g <- veg_re_g[veg_re_g$g_belc == b, ]
@@ -75,4 +74,22 @@ veg_re_g_gpm_indv <- lapply(belc, function(b){
   veg_re_g_gpm <- splitMultRespLSO(x = veg_re_g_gpm, nbr = 1)
 })
 names(veg_re_g_gpm_indv) <- belc
-saveRDS(veg_re_g_gpm_indv, file = paste0(path_rdata, "veg_re_g_gpm_indv.rds"))
+# save the object with 100 predictors and make training
+saveRDS(veg_re_g_gpm_indv, file = paste0(path_rdata, "veg_rs_100.rds"))
+
+#only use predictors appearing in all 3 exploratories (leaves us eventually with 24 predictors)
+predictors_common <- veg_re_g_gpm_indv[[1]]@meta$input$PREDICTOR_FINAL[veg_re_g_gpm_indv[[1]]@meta$input$PREDICTOR_FINAL %in% veg_re_g_gpm_indv[[2]]@meta$input$PREDICTOR_FINAL]
+predictors_common <- predictors_common[predictors_common %in% veg_re_g_gpm_indv[[3]]@meta$input$PREDICTOR_FINAL]
+# adding some more predictors to get a more summed up/complete list of preditcors
+predictors_common <- c(predictors_common, "PC1_sd", "PC1_var", "PC2_sd", paste0("PC", c(1,3:5), "_median"))
+predictors_common <- predictors_common[order(predictors_common)]
+#save the common predictors in the final variable
+veg_re_g_gpm_indv[[1]]@meta$input$PREDICTOR_FINAL <- predictors_common
+veg_re_g_gpm_indv[[2]]@meta$input$PREDICTOR_FINAL <- predictors_common
+veg_re_g_gpm_indv[[3]]@meta$input$PREDICTOR_FINAL <- predictors_common
+
+saveRDS(veg_re_g_gpm_indv, file = paste0(path_rdata, "gpm_obj_24pred.rds"))
+
+#####  test with 3 predictors
+#preds3<-c(veg_re_g_gpm_indv[[1]]@meta$input$PREDICTOR_FINAL[-c(4:24)])
+#veg_re_g_gpm_indv[[1]]@meta$input$PREDICTOR_FINAL<-preds3

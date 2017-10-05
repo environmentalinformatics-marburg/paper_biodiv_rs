@@ -1,9 +1,4 @@
 # Set path ---------------------------------------------------------------------
-if(Sys.info()["sysname"] == "Windows"){
-  source("D:/active/exploratorien/project_biodiv_rs/src/00_set_environment.R")
-} else {
-  source("/media/permanent/active/exploratorien/project_biodiv_rs/src/00_set_environment.R")
-}
 
 compute <- TRUE
 
