@@ -1,6 +1,6 @@
 
 # Set path ---------------------------------------------------------------------
-source("F:/exploratorien/scripts/00_set_environment.R")
+source("C:/Users/tnauss/permanent/plygrnd/exploratorien/project_biodiv_rs/src/tnauss/00_set_environment.R")
 
 compute = TRUE
 
@@ -36,6 +36,7 @@ if(compute){
 
 # Prepare gpm data set used for remote sensing prediction study ----------------
 belc <- c("AEG", "HEG", "SEG")
+
 veg_re_g_gpm_indv <- lapply(belc, function(b){
   act_veg_re_g <- veg_re_g[veg_re_g$g_belc == b, ]
   
