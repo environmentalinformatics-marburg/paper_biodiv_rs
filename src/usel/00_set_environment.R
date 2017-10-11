@@ -40,6 +40,12 @@ library(satelliteTools)  #if (!require(RStoolbox)){install.packages("RStoolbox")
 library(semPlot)
 library(sp)
 library(RStoolbox)
+library(data.table)
+library(reshape2)
+library(foreach)
+library(doParallel)
+
+source("http://peterhaschke.com/Code/multiplot.R")
 
 # Other settings ---------------------------------------------------------------
 rasterOptions(tmpdir = path_temp)
