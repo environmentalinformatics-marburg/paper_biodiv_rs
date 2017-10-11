@@ -34,3 +34,13 @@ for(be in names(LUI)){
   LUI[[be]] <- act_gpm_selected
 }
 saveRDS(LUI, file = paste0(path_results, "pls_ffs_Shan_9CV.rds"))
+
+#check for NULL values in the model
+s<-lapply(LUI, function(be){
+  e<-lapply(be@model$pls_ffs[[1]], function(p){
+    p$testing$PREDICTED
+  })
+})
+lapply(s, function(t){
+  length(t[!unlist(lapply(t,is.null))])
+})

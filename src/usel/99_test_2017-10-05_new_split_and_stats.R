@@ -36,6 +36,9 @@ for(i in seq(3)){
                                                         "PC1_median", "PC2_sd", "PC5_median")
 }
 
+#c("PC1_sd","PC2_sd", "PC3_median","PC4_median","PC4_sd", "PC5_median", "PC5_sd","PC1_median", "PC2_sd", "PC5_median")
+#"pca_Grey.Level_Nonuniformity.b1r7o1_median") #this is for Ev und Shan
+
 cl <- makeCluster(detectCores())
 registerDoParallel(cl)
 test_model <- lapply(belc, function(be){

@@ -38,7 +38,7 @@ ggplot(data = dat, aes_string("value", resp, group = "variable")) + #oder tausch
 
 # for FFS (me)
 best<-x
-= 7
+r= 7 #replace with the required response
 for(be in names(best)){
   best[[be]] <- lapply(1:50,function(i){ 
     best[[be]]@model[[2]][[r]][[i]]$model$finalModel$xNames # this is different in ffs und rfe
@@ -71,7 +71,7 @@ colnames(singlebest$SEG)<- c("SEG_singlebest_pred","SEG_Freq")
 #list and just access the singlebest 5 most frequent
 for(be in names(singlebest)){
   singlebest[[be]] <- lapply(1:length(singlebest[[be]]),function(f){ 
-    singlebest[[be]]<-head(singlebest[[be]][order(singlebest[[be]][f], decreasing  = TRUE),],4 )
+    singlebest[[be]]<-head(singlebest[[be]][order(singlebest[[be]][f], decreasing  = TRUE),],4 ) #or 3
   })
 }
 specrichsing<-bind_cols(singlebest$AEG[2],singlebest$HEG[2],singlebest$SEG[2])
@@ -80,3 +80,22 @@ pls_ffs_singleSPEC<-pls_ffs_single1
 rm(pls_ffs_single1)
 pls_ffs_mergeSPEC<-pls_ffs_merge1
 rm(pls_ffs_merge1)
+
+
+# ------- if you want the sum of alle the beste frequent preictors
+Specrich_best_pred <- as.data.frame(table(unlist(best))) #this makes a list with all expl. merged! (2 entries!)
+Specrich_best_pred$response<-"SPEC"
+Specrich_best_pred[order(Specrich_best_pred$Freq),] #order after most frequently used predictors
+pls_ffs_mergeLUI<-Specrich_best_pred
+
+# for RFE (me)
+best<-x
+for(be in names(best)){
+  best[[be]] <- lapply(1:50,function(i){ 
+    best[[be]]@model[[1]][[r]][[i]]$model$fit$finalModel$xNames # this is different in ffs und rfe
+  })
+}
+Specrich_best_pred <- as.data.frame(table(unlist(best))) #this makes a list with all expl. merged! (2 entries!)
+Specrich_best_pred$response<-"SPECRICH"
+Specrich_best_pred[order(Specrich_best_pred$Freq),] #order after most frequently used predictors
+

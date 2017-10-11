@@ -24,6 +24,7 @@ ggplot(data = dat, aes_string("value", resp, group = "variable")) + #oder tausch
 # extract the most used predictors for all 50 models in each exploratory
 best<-x # if you use the complete model set, write it in a new df!
 
+# weiß nciht ob es lauffähig ist
 if (r=1){
   for(be in names(best)){
      best[[be]] <- lapply(1:50,function(i){ 

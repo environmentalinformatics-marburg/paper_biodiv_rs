@@ -40,12 +40,20 @@ veg_re_g_gpm@meta$input$PREDICTOR_FINAL<-specpred
 # Compute resamples following a leave location out approach
 #veg_re_g_gpm <- splitMultRespLSO(x = veg_re_g_gpm, nbr = 50)
 testA<-c("HEG","SEG")
-veg_re_g_gpm <- splitMultRespLSO(x = veg_re_g_gpm, 
+veg_re_g_gpm1 <- splitMultRespLSO(x = veg_re_g_gpm, 
                                  #response=col_diversity,
                                  #resamples=51:150,
                                  #selector= veg_re_g_gpm@data$input$EPID[1:50],
                                  #use_selector=T,
-                                 nbr = 5)
+                                 nbr = 1)
+
+selector = veg_re_g_gpm@meta$input$SELECTOR
+veg_re_g_gpm@data$input[, "explo"]
+
+veg_re_g_gpm1@meta$input$TRAIN_TEST
+
+
+sum(veg_re_g_gpm@data$input$explo=="AEG")
 
 # trying to modify the split function
 
