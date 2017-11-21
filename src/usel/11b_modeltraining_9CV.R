@@ -1,4 +1,4 @@
-source("D:/UNI/Master/MA/exploratorien/scripts/00_set_environment.R")
+source("D:/UNI/Master/MA/exploratorien/scripts/project_biodiv_rs/src/usel/00_b_set_environment_start_modeltrain.R")
 
 x<-readRDS(paste0(path_rdata,"preprocessing/gpm_obj_24pred.rds"))
 pred<-x[[1]]@meta$input$PREDICTOR_FINAL
@@ -24,16 +24,16 @@ for(be in names(LUI)){
   act_gpm_selected <- trainModel(x = act_gpm_selected,
                                  n_var = NULL,             
                                  mthd = "pls", #rf, gam, glmboost
-                                 mode = "ffs",
+                                 mode = "rfe",
                                  seed_nbr = 11, 
                                  cv_nbr = 9,
                                  var_selection = "indv",
-                                 response_nbr = 2,
+                                 response_nbr = c(1:3,18),
                                  filepath_tmp = path_temp
   )
   LUI[[be]] <- act_gpm_selected
 }
-saveRDS(LUI, file = paste0(path_results, "pls_ffs_Shan_9CV.rds"))
+saveRDS(LUI, file = paste0(path_results, "pls_rfe_9CV.rds"))
 
 #check for NULL values in the model
 s<-lapply(LUI, function(be){

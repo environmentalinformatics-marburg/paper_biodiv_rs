@@ -38,10 +38,10 @@ ggplot(data = dat, aes_string("value", resp, group = "variable")) + #oder tausch
 
 # for FFS (me)
 best<-x
-r= 7 #replace with the required response
+r= 1 #replace with the required response
 for(be in names(best)){
-  best[[be]] <- lapply(1:50,function(i){ 
-    best[[be]]@model[[2]][[r]][[i]]$model$finalModel$xNames # this is different in ffs und rfe
+  best[[be]] <- lapply(1:10,function(i){ 
+    best[[be]]@model[[4]][[r]][[i]]$model$finalModel$xNames # this is different in ffs und rfe
   })
 }
 Specrich_best_pred <- as.data.frame(table(unlist(best))) #this makes a list with all expl. merged! (2 entries!)
@@ -74,8 +74,12 @@ for(be in names(singlebest)){
     singlebest[[be]]<-head(singlebest[[be]][order(singlebest[[be]][f], decreasing  = TRUE),],4 ) #or 3
   })
 }
-specrichsing<-bind_cols(singlebest$AEG[2],singlebest$HEG[2],singlebest$SEG[2])
+specrichsing<-bind_rows(singlebest$AEG[2],singlebest$HEG[2],singlebest$SEG[2])
 specrichsing$response<-"SPECRICH"
+specrichsing$be<-NA
+
+write.csv(specrichsing,paste0(path_stats,"RF_freq.csv"))
+saveRDS(specrichsing,paste0(path_stats,"pred_frequency_PLS.rds"))
 pls_ffs_singleSPEC<-pls_ffs_single1
 rm(pls_ffs_single1)
 pls_ffs_mergeSPEC<-pls_ffs_merge1
