@@ -1,13 +1,15 @@
-
-source("D:/UNI/Master/MA/exploratorien/scripts/00_set_environment.R")
 # a independet compilation model
+
+source("D:/UNI/Master/MA/exploratorien/scripts/project_biodiv_rs/src/usel/00_set_environment.R")
+# read the dataframe before its been transformed to gpm, beaucse we are aiming for a new structure where all explo
+# are in one df
 veg_re_g <- readRDS(paste0(path_rdata, "preprocessing/veg_re_g.rds"))
 
-
+be="AEG"
 levels(veg_re_g$explo)<-c("AEG","HEG","SEG")
 veg_re_g$explo<- as.character(veg_re_g$explo)
 
-col_selector <- which(names(veg_re_g) =="explo") #alternativ EPID
+col_selector <- which(names(veg_re_g) =="EPID") #alternativ explo
 
 col_diversity <- c(seq(which(names(veg_re_g) == "SPECRICH"),
                        which(names(veg_re_g) == "EVENESS")),
@@ -32,7 +34,7 @@ veg_re_g_gpm <- gpm(veg_re_g, meta, scale = FALSE)
 # Clean predictor variables
 # read the old varibale set with 24 redictors
 gpmobj<-readRDS(paste0(path_rdata, "preprocessing/gpm_obj_24pred.rds"))
-pred<-gpmobj[[1]]@meta$input$PREDICTOR_FINAL #schriebe vektor und extrahiere die nötigen Prediktoren
+pred<-gpmobj[[1]]@meta$input$PREDICTOR_FINAL #schriebe vektor und extrahiere die n?tigen Prediktoren
 #for the specmodel we use these predictors
 specpred<-pred[c(3,4,6,7,9,10,15,16)]
 veg_re_g_gpm@meta$input$PREDICTOR_FINAL<-specpred
@@ -40,12 +42,31 @@ veg_re_g_gpm@meta$input$PREDICTOR_FINAL<-specpred
 # Compute resamples following a leave location out approach
 #veg_re_g_gpm <- splitMultRespLSO(x = veg_re_g_gpm, nbr = 50)
 testA<-c("HEG","SEG")
+function (x, ...) 
+{
+  .local <- function (x, nbr = 1) 
+  {
+    smr <- splitMultRespLSO(x = x@data$input, response = x@meta$input$RESPONSE_FINAL, 
+                            selector = x@meta$input$SELECTOR, nbr = nbr)
+    x@meta$input$TRAIN_TEST <- smr[[1]]
+    x@meta$input$TRAIN_TEST_NSMPLS <- smr[[2]]
+    return(x)
+  }
+  .local(x, ...)
+}
+
 veg_re_g_gpm1 <- splitMultRespLSO(x = veg_re_g_gpm, 
                                  #response=col_diversity,
-                                 #resamples=51:150,
-                                 #selector= veg_re_g_gpm@data$input$EPID[1:50],
+                                 resamples=51:150,
+                                 #selector= veg_re_g_gpm@meta$input$explo[1:50] #veg_re_g_gpm@meta$input$explo #veg_re_g_gpm@meta$input$SELECTOR %in% 
+                                  # ,
                                  #use_selector=T,
-                                 nbr = 1)
+                                 nbr =50)
+
+veg_re_g_gpm2<-splitMultResp(x=veg_re_g_gpm,
+                             p=0.32,
+                             use_selector=T,
+                             selector= aeg_select)
 
 selector = veg_re_g_gpm@meta$input$SELECTOR
 veg_re_g_gpm@data$input[, "explo"]

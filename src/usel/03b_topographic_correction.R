@@ -1,7 +1,7 @@
 # Set path ---------------------------------------------------------------------
 rm(list=ls()) 
 source("F:/exploratorien/scripts/00_set_environment.R")
-source("D:/exploratorien/scripts/00_set_environment.R")
+source("D:/UNI/Master/MA/exploratorien/scripts/project_biodiv_rs/src/usel/00_set_environment.R")
 #setwd<-"D:/UNI/Master/MA/exploratorien/data/"
 setwd<-"F:/exploratorien/data/"
 compute = T

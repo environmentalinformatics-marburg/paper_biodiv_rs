@@ -1,18 +1,18 @@
 
 # Set path ---------------------------------------------------------------------
-source("F:/exploratorien/scripts/00_set_environment.R")
+source("D:/UNI/Master/MA/exploratorien/scripts/project_biodiv_rs/src/usel/00_a_set_environment_until_gpm_compile.R")
 
 compute = TRUE
 
 # Compile grassland diversity and remote sensing -------------------------------
 if(compute){
-  vegrel14 <- readRDS(file = paste0(path_rdata, "vegrel14.rds"))
+  vegrel14 <- readRDS(file = paste0(path_rdata, "preprocessing/vegrel14.rds"))
   
-  vegrel15 <- readRDS(file = paste0(path_rdata, "vegrel15.rds"))
+  vegrel15 <- readRDS(file = paste0(path_rdata, "preprocessing/vegrel15.rds"))
   
-  meta <- readRDS(paste0(path_rdata, "meta.rds"))
+  meta <- readRDS(paste0(path_rdata, "preprocessing/meta.rds"))
   
-  re <- readRDS(paste0(path_rdata, "re_predictors.rds"))
+  re <- readRDS(paste0(path_rdata, "preprocessing/re_predictors.rds"))
   re_df <- lapply(re, function(e){
     as.data.frame(e)
   })
