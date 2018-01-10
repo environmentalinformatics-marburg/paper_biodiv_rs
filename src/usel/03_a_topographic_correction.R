@@ -1,7 +1,7 @@
 # Set path ---------------------------------------------------------------------
 rm(list=ls()) 
 source("F:/exploratorien/scripts/00_set_environment.R")
-source("D:/UNI/Master/MA/exploratorien/scripts/project_biodiv_rs/src/usel/00_set_environment.R")
+source("D:/UNI/Master/MA/exploratorien/scripts/project_biodiv_rs/src/usel/00_a_set_environment_until_gpm_compile.R")
 #setwd<-"D:/UNI/Master/MA/exploratorien/data/"
 setwd<-"F:/exploratorien/data/"
 compute = T
@@ -9,7 +9,7 @@ compute = T
 ####topographic correction------------------------------------------------------
 {#no function! this should work for all exploratories with the replaced name-files!
 scene<-stack(re[[2]]) #call the requiered listnumber from your dataset
-HEG_DEM<-raster(paste0(path_re,"data/RE2015/2015-04-24T110857_RE1_1B-NAC_20835994_303428_dem_hai.tif")) #read the DEM 
+HEG_DEM<-raster(paste0(path_re,"2015-04-24T110857_RE1_1B-NAC_20835994_303428_dem_hai.tif")) #read the DEM 
 dem<-HEG_DEM
 if(compute) {
   RE_DEM<- projectRaster(dem,scene,method="bilinear") #probably not necassary anymore after new atm.corr.
