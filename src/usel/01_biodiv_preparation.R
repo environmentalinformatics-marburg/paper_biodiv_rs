@@ -1,5 +1,5 @@
 # Set path ---------------------------------------------------------------------
-  source("D:/UNI/Master/MA/exploratorien/scripts/00_set_environment.R")
+  source("D:/UNI/Master/MA/exploratorien/scripts/project_biodiv_rs/src/usel/00_a_set_environment_until_gpm_compile.R")
 
 compute = T
 

@@ -11,6 +11,8 @@ tstat<-lapply(x,function(be){
 })
 saveRDS(tstat, paste0(path_stats,"tstat_rf.rds"))
 saveRDS(tstat, paste0(path_stats,"tstat_pls.rds"))
+
+tstat<-readRDS(paste0(path_stats,"tstat_rf.rds"))
 ######## linear model output VALIDATION-Data
 #------------------------------------------------------------
 # we want the Rqu/RMSE from each RESAMPLE(10 iterations) set 
@@ -64,22 +66,6 @@ value_pred_test <-lapply(tstat, function(be){
 value_pred_test = do.call("rbind", value_pred_test)
 rownames(value_pred_test) <- NULL
 
-spec<-value_pred_test[value_pred_test$response=="SPECRICH",]
-linmodel_aeg<-glm(testing_predicted~testing_response, data=spec[spec$be=="AEG",])
-summary(linmodel_aeg)
-# PLS p-value: 0.0007482 ist <0,05 --> ich interpretiere den p-Wert aus Tabelle: 9.7e-14 ***
-# RF  p-value: 0.0001613 p-Wert: 7.75e-11 ***
-linmodel_heg<-glm(testing_predicted~testing_response, data=spec[spec$be=="HEG",])
-summary(linmodel_heg)
-#PLS p-value: 0.1755 das Modell ist nichts wert
-# RF p-value: 0.069 p-Wert: 2.18e-13 ***
-linmodel_seg<-glm(testing_predicted~testing_response, data=spec[spec$be=="SEG",])
-summary(linmodel_seg)
-# PLS p-value: 0.09332 ich interpretiere p-Wert aus Tabelle: <2e-16 ***
-# RF p-value: 0.9099 das mOdell ist nichts wert
-
-#aber die R² sind immer rottig?!
-# was ist mit übrprüfungstest: Multikoll. und Autokorrel.? 
 
 
 # rearrange data.frame for easier visualisation in ggplot
@@ -91,14 +77,8 @@ levels(pls_value_pred_test$variable)<-c("pls_testing_predicted","testing_respons
 levels(rf_value_pred_test$variable)<-c("rf_testing_predicted","testing_response")
 test_pred<-rbind(rf_value_pred_test, pls_value_pred_test)
 
-saveRDS(test_pred,paste0(path_stats,"obs_pred_PLS_RF.rds"))
+saveRDS(value_pred_test,paste0(path_stats,"obs_pred_pls_ffs.rds"))
 
-# linearmodel<-lm(seg$testing_predicted~aeg$testing_response)
-# plot(linearmodel)
-# coef<-coef(linearmodel)
-# predict(linearmodel, interval="confidence") # according to the model to species
-# #richness is, on average, between21 and 24 on a 95 percent confidence interval around the mean prediction
-# predict(linearmodel,interval="prediction") # 95%of species richness are between 19 and 27 (R dummie p.298)
 
 # we cal. Rsq/RMSE as "usual" (one R-value per response) "all" or "Rsum"
 sum_r <- lapply(tstat, function(be){
@@ -154,7 +134,7 @@ saveRDS(tstat_errors,paste0(path_stats,"variance_PLS_9CV_allRESP.rds"))
 ## some statistics interpreatations
 rf<-readRDS(paste0(path_stats, "allnewstats_RF_FFS_9CV_allRESP.rds"))
 pls<-readRDS(paste0(path_stats, "allnewstats_PLS_FFS_9CV_allRESP.rds"))
-rf[which(rf$response=="SPECRICH"& rf$variable=="rmse" & rf$smpl=="Rmean"),]
+rf[which(rf$response=="SPECRICH"& rf$variable=="rmse" & rf$smpl=="Rmean"),] #get Rmean values
 pls[which(pls$response=="SPECRICH"& pls$variable=="rmse" & pls$smpl=="Rmean"),]
 
 
@@ -165,11 +145,17 @@ meanval<-aggregate(test_pred$value, list(test_pred$response, test_pred$be, test_
 colnames(meanval)<-c("response","be","variable","value")
 meanval[which(meanval$response=="Species richness"& meanval$variable=="pls_testing_predicted"),]
 
-#normalize RMSE to get percentage of results
-library(hydroGOF)
-test<-test_pred[which(test_pred$response=="Species richness"& test_pred$be=="SEG"),]
-#test<-test[101:150,]
-sim<-test[which(test$variable=="pls_testing_predicted"),]
-obs<-test[which(test$variable=="testing_response"),]
-obs<-obs[1:50,]
-nrmse(sim$value,obs$value, norm="maxmin")
+#get min and max data from predicted models
+min(rf$value[which(rf$response=="Species richness"& rf$variable=="rmse"& rf$stat=="train" & rf$be=="HEG")])
+max(rf$value[which(rf$response=="Species richness"& rf$variable=="rmse"& rf$stat=="train" & rf$be=="HEG")])
+
+min(pls$value[which(pls$response=="Species richness"& pls$variable=="rmse"& pls$stat=="train" & pls$be=="HEG")])
+max(pls$value[which(pls$response=="Species richness"& pls$variable=="rmse"& pls$stat=="train" & pls$be=="HEG")])
+
+min(pls$value[which(pls$response=="Species richness"& pls$variable=="rmse"& pls$stat=="test" & pls$be=="AEG")])
+max(pls$value[which(pls$response=="Species richness"& pls$variable=="rmse"& pls$stat=="test" & pls$be=="AEG")])
+
+min(rf$value[which(rf$response=="Species richness"& rf$variable=="rmse"& rf$stat=="test" & rf$be=="AEG")])
+max(rf$value[which(rf$response=="Species richness"& rf$variable=="rmse"& rf$stat=="test" & rf$be=="AEG")])
+
+

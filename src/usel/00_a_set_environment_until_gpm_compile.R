@@ -6,14 +6,15 @@
 filepath_base<-"D:/UNI/Master/MA/exploratorien/"
 path_data <- paste0(filepath_base, "data/")
 path_lui <- paste0(path_data, "lui/")
-path_plots <- paste0(path_data, "plots/plots/")
+path_plots <- paste0(path_data, "plots/")
 path_releves <- paste0(path_data, "releves/")
 path_re <- paste0(path_data, "RE2015/")
 path_re_cor<-paste0(path_data, "RE2015_atmocor/")
 path_rdata <- paste0(path_data, "rdata/")
+path_rdata_pre <- paste0(path_rdata,"preprocessing/")
 path_met_a <- paste0(path_data, "met_a/")
 path_met_m <- paste0(path_data, "met_m/")
-#path_temp <- paste0(path_data, "temp/")
+path_temp <- paste0(path_data, "temp/")
 path_output <- paste0(path_data, "output/")
 #path_results<- paste0(path_data, "results/")
 path_stats<-paste0(path_data, "stats/")
@@ -46,7 +47,7 @@ library(RStoolbox)
 rasterOptions(tmpdir = path_temp)
 
 saga_cmd <- "D:/UNI/Master/Portable_SAGA/saga_cmd.exe "
-# initOTB("C:/OSGeo4W64/bin/")
-#initOTB("C:/Users/ulli/Desktop/OTB-5.10.1-win64/OTB-5.10.1-win64/bin/")
+initOTB("D:/UNI/Master/MA/OTB-6.2.0-win64/OTB-6.2.0-win64/bin/")
+
 #für Lab PC
-initOTB("C:/Users/seligu/Downloads/OTB-6.0.0-win64/bin/")
+#initOTB("C:/Users/seligu/Downloads/OTB-6.0.0-win64/bin/")

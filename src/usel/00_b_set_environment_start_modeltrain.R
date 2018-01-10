@@ -34,5 +34,3 @@ library(foreach)
 library(wesanderson)
 library(lattice)
 library(latticeExtra)
-
-source("http://peterhaschke.com/Code/multiplot.R")

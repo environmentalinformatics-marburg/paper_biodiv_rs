@@ -17,59 +17,63 @@ levels(rf$response)<-c("Species richness","Shannon","Eveness","Land Use Intensit
 ##library(tikzDevice)
 ##options(tz="Europe/Berlin")
 #create tex file for the plot
-##tikz(file = "D:/UNI/Master/MA/Latex/plot_test.tex", width = 5, height = 5)
+tikz(file = "D:/UNI/Master/MA/Latex/plot_test.tex", width = 5, height = 5)
 pls_rmse<-ggplot(data= pls[pls$smpl %in% seq(10) & pls$variable=="rmse"& pls$response %in% mr_all ,],
              aes( x= be ,y=value, fill=stat),shape=21,
              stroke=5)+
   geom_boxplot(lwd=0.2)+
       labs(title = "Model performance of PLS",
-       x = NULL, y = "RMSE", fill = "10 model instances")+
+       x = NULL, y = "RMSE (number of species)", fill = "10 model instances")+
   #scale_fill_manual(values=c("#FFCC99","#CCFFFF","#CCCCFF"))+ #"#FFCC99","#CC99CC","#99FFCC" "#6666CC","#FFCC99","#66CC99"
-  scale_fill_manual(labels=c("validation","prediction"),values=c("#FFCC99","#996666"))+ #values=c("#660033","#CC9900") #für boxplot farben
+  scale_fill_manual(labels=c("validation","prediction"),values=c("#FFCC99","#996666"))+ #values=c("#660033","#CC9900") #f?r boxplot farben
   scale_x_discrete(labels=c("Alb","Hainich","Schorfheide"))+
   facet_wrap(~response, scales = "free")+
-  theme(axis.text.x=element_text(size=9), axis.title.x=element_text(size=9),
-        axis.text.y=element_text(size=9), axis.title.y=element_text(size=9),
-        legend.title=element_text(size=9, face=c("bold")),
-        plot.title=element_text(size=10, face="bold", hjust=0.5))
-##dev.off()
+  theme(axis.text.x=element_text(size=12),
+        axis.text.y=element_text(size=12), axis.title.y=element_text(size=10),
+        legend.title=element_text(size=10, face=c("bold")),
+        plot.title=element_text(size=12, face="bold", hjust=0.5),
+        legend.justification=c(1,0), legend.position=c(1,0.8))
 
 rf_rmse<-ggplot(data= rf[rf$smpl %in% seq(10) & rf$variable=="rmse"& rf$response %in% mr_all ,],
                  aes( x= be ,y=value, fill=stat),shape=21,
                  stroke=5)+
   geom_boxplot(lwd=0.2)+
   labs(title = "Model performance of RF",
-       x = NULL, y = "RMSE", fill = "10 model instances")+
+       x = NULL, y = "RMSE (number of species)", fill = "10 model instances")+
   #scale_fill_manual(values=c("#FFCC99","#CCFFFF","#CCCCFF"))+ #"#FFCC99","#CC99CC","#99FFCC" "#6666CC","#FFCC99","#66CC99"
-  scale_fill_manual(labels=c("validation","prediction"),values=c("#FFCC33","#996666"))+ #values=c("#660033","#CC9900") #für boxplot farben
+  scale_fill_manual(labels=c("validation","prediction"),values=c("#FFCC33","#996666"))+ #values=c("#660033","#CC9900") #f?r boxplot farben
   scale_x_discrete(labels=c("Alb","Hainich","Schorfheide"))+
   facet_wrap(~response, scales = "free")+
-  theme(axis.text.x=element_text(size=9), axis.title.x=element_text(size=9),
-        axis.text.y=element_text(size=9), axis.title.y=element_text(size=9),
-        legend.title=element_text(size=9, face=c("bold")),
-        plot.title=element_text(size=10, face="bold", hjust=0.5))
-multiplot( pls_rmse,rf_rmse, cols=2)
+  theme(axis.text.x=element_text(size=12),
+        axis.text.y=element_text(size=12), axis.title.y=element_text(size=10),
+        legend.title=element_text(size=10, face=c("bold")),
+        plot.title=element_text(size=12, face="bold", hjust=0.5),
+        legend.justification=c(1,0), legend.position=c(0.4,0.8))
+grid.arrange(pls_rmse,rf_rmse, ncol=2)
 
+#multiplot( pls_rmse,rf_rmse, cols=2)
+dev.off()
 ####################
 ## - only predicted values and observed values------------------------------------------------
 pls_value_pred_test<-readRDS(paste0(path_stats,"obs_pred_pls_ffs.rds"))
 levels(pls_value_pred_test$response)<-c("Species richness","Shannon","Eveness","Land Use Intensity")
+spe<-pls_value_pred_test[pls_value_pred_test$response=="Species richness",]
 
 # #plot the observed data points against predicted data points from all exploratories
 # #if you want points, use instead geom_point(pch=22, colour="black", size=2)
-# pls<-ggplot(data=pls_value_pred_test[pls_value_pred_test$response %in% mr_all ,],
-#             aes( x= be ,y=value, fill=variable), size=1.5)+
-#   scale_fill_manual(values=wes_palette(n=3,name="Chevalier"), labels=c("validated","observed"))+
-#   geom_boxplot(position= position_dodge(width=0.6))+
-#   labs(title = "distribution of observed values and validated values after PLS regression",
-#        lineheigth=2, 
-#        x = "", y = "unit of measurement", fill = "50 data points")+
-#   scale_x_discrete(labels=c("Alb","Hainich","Schorfheide"))+
-#   facet_wrap(~response,scale="free")+
-#   theme(axis.text.x=element_text(size=9), axis.title.x=element_text(size=9),
-#         axis.text.y=element_text(size=9), axis.title.y=element_text(size=9),
-#         legend.title=element_text(size=9, face=c("bold")),
-#         plot.title=element_text(size=9, face="bold"))
+pls<-ggplot(data=pls_value_pred_test[pls_value_pred_test$response %in% mr_all ,],
+            aes( x= be ,y=value, fill=variable), size=1.5)+
+  scale_fill_manual(values=wes_palette(n=3,name="Chevalier"), labels=c("validated","observed"))+
+  geom_boxplot(position= position_dodge(width=0.6))+
+  labs(title = "distribution of observed values and validated values after PLS regression",
+       lineheigth=2,
+       x = "", y = "unit of measurement", fill = "50 data points")+
+  scale_x_discrete(labels=c("Alb","Hainich","Schorfheide"))+
+  facet_wrap(~response,scale="free")+
+  theme(axis.text.x=element_text(size=9), axis.title.x=element_text(size=9),
+        axis.text.y=element_text(size=9), axis.title.y=element_text(size=9),
+        legend.title=element_text(size=9, face=c("bold")),
+        plot.title=element_text(size=9, face="bold"))
 # 
 # # for RF
 # rf_value_pred_test<-readRDS(paste0(path_stats,"obs_pred_rf_ffs.rds"))
@@ -92,7 +96,6 @@ levels(pls_value_pred_test$response)<-c("Species richness","Shannon","Eveness","
 # multiplot(pls,rf)
 
 #plot the observed data points against predicted data points from all exploratories
-names=c(rep("A", 20) , rep("B", 8) , rep("C", 30))
 
 test_pred<-readRDS(paste0(path_stats,"obs_pred_PLS_RF.rds"))
 mr_all<-c("Species richness")
@@ -100,22 +103,21 @@ t<-ggplot(data=test_pred[test_pred$response %in% mr_all ,],
            aes( x= be ,y=value, fill=variable), size=10)+
   scale_fill_manual(values=c("#FFCC33","#663333","#FFCC99"), labels=c("RF validated","observed","PLS validated"))+
   geom_boxplot()+
-  labs(title = "distribution of observed values and validated values after RF regression",
-       lineheigth=2,
-       x = "", y = "unit of measurement", fill = "50 data points")+
+  labs( lineheigth=2,
+       x = "", y = "number of species", fill = "50 data points")+
   scale_x_discrete(labels=c("Alb","Hainich","Schorfheide"))+
   facet_wrap(~response,scale="free")+
-  #stat_summary(fun.data = pls$value, geom = "text", fun.y = mean, colour = "red")+
-  theme(axis.text.x=element_text(size=9), axis.title.x=element_text(size=9),
-        axis.text.y=element_text(size=9), axis.title.y=element_text(size=9),
-        legend.title=element_text(size=9, face=c("bold")),
-        plot.title=element_text(size=9, face="bold"))
+theme(axis.text.x=element_text(size=12),
+      axis.text.y=element_text(size=12), axis.title.y=element_text(size=12),
+      legend.title=element_text(size=10, face=c("bold")),
+      plot.title=element_text(size=12, face="bold", hjust=0.5),
+      legend.justification=c(1,0), legend.position=c(1,0.76))
   #geom_text(data=NULL, aes( x=be, y=3, label=lab), col='red', size=3)
 #geom_text(x= test_pred$be=="AEG", y= 3, label= "red text", col= "red")     
 t+annotate("text", x = unique(test_pred$be), y = c(19,13,11), label = c("34.09  33.84    33.82",
                                                                "34.18   34.70  34.48",
-                                                               "23.55     23.74   23.64"), size=2)
-           
+                                                               "23.55     23.74   23.64"), size=4)
+dev.off()           
 # predictor frequency usage in final model
     ## we take the specrichsing from predictor_freq.skript output from single exploratories
     # 
@@ -126,24 +128,34 @@ t+annotate("text", x = unique(test_pred$be), y = c(19,13,11), label = c("34.09  
 pls_fre<-read.csv(paste0(path_stats,"PLS_freq.csv"))
 rf_fre<-read.csv(paste0(path_stats,"RF_freq.csv"))
 
+tikz(file = "D:/UNI/Master/MA/Latex/plot_test.tex", width = 3, height = 3, sanitize = T)
+options(tikzMetricPackages = c("\\usepackage[utf8]{inputenc}","\\usepackage[T1]{fontenc}", 
+                               "\\usetikzlibrary{calc}", "\\usepackage{amssymb}"))
+require(gridExtra)
 rf<-ggplot(data=rf_fre, aes(x=reorder(best_pred, +value), y= value, fill=variable, round(value)))+
   coord_flip()+
   geom_bar(stat="identity",  position = "dodge",  width=0.15)+
-  scale_fill_manual(values=c("#660066","#FFCC33","#CC6600"))+
-  theme(legend.position="top")+
-  labs(x = "", y = "frequency", fill = "RF")
+  scale_fill_manual(values=c("#660066","#FFCC33","#CC6600"), labels=c("Alb","Hainich","Schorfheide"), name="")+
+  theme(legend.justification=c(1,0), legend.position=c(1,0))+
+#        axis.text.x=element_text(size=14),
+#        axis.text.y=element_text(size=12), axis.title.y=element_text(size=12),
+#        legend.text = element_text(size=12))+
+  scale_y_discrete(breaks=c(0,2,4,6,8,10), limits=0:10)+
+  labs(x = "", y = "frequency", title = "RF")
 
-pls<-ggplot(data=pls_fre, aes(x=reorder(best_pred, +value), y= value, fill=variable, round(value)))+
+pls<-ggplot(data=pls_fre, aes(x=reorder(best_pred, +value), y= value, fill=variable))+
   coord_flip()+
   geom_bar(stat="identity",  position = "dodge",  width=0.15)+
-  scale_fill_manual(values=c("#660066","#FFCC33","#CC6600"))+
-  theme(legend.position="top")+
-  labs(x = "", y = "frequency", fill = "PLS")
-
-multiplot(pls,rf, cols=2)
-+
-  scale_y_discrete(labels=pls_fre$value)
-  
+  scale_fill_manual(values=c("#660066","#FFCC33","#CC6600"), labels=c("Alb","Hainich","Schorfheide"), name="" )+
+  theme(legend.justification=c(1,0), legend.position=c(1,0))+
+        #axis.text.x=element_text(size=14),
+        #axis.text.y=element_text(size=12), axis.title.y=element_text(size=12),
+        #legend.text = element_text(size=12))+
+  scale_y_discrete(breaks=c(0,2,4,6,8,10), limits=0:10)+
+  labs(x = "", y = "frequency", title = "PLS")
+grid.arrange(pls, rf, ncol=2)
+#multiplot(pls,rf, cols=2)
+dev.off()
 
 #### BAUSTELLE-------------------
 # varianz
