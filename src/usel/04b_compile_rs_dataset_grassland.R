@@ -12,15 +12,16 @@ if(compute){
   
   meta <- readRDS(paste0(path_rdata, "preprocessing/meta.rds"))
   
-  re <- readRDS(paste0(path_rdata, "preprocessing/re_predictors.rds"))
-  re_df <- lapply(re, function(e){
-    as.data.frame(e)
-  })
-  re_df <- do.call("rbind", re_df)
-  re_df$Year <- 2015
-  nas <- colSums(is.na(re_df))
-  re_df <- re_df[, which(nas < 1)]
-  
+  re <- readRDS(paste0(path_rdata_pre, "re03_predictors.rds"))
+  ## we already did this
+  # re_df <- lapply(re, function(e){
+  #   as.data.frame(e)
+  # })
+  # re_df <- do.call("rbind", re_df)
+  # re_df$Year <- 2015
+  # nas <- colSums(is.na(re_df))
+  # re_df <- re_df[, which(nas < 1)]
+  # 
   veg_re_g <- merge(vegrel15, re_df, by.x = c("EPID", "Year"),
                     by.y = c("EP", "Year"))
   max(colSums(is.na(veg_re_g)))
