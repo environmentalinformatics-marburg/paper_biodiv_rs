@@ -56,6 +56,16 @@ names(test_model) = belc
 # saveRDS(test_model, file = paste0(path_rdata, "test_model_2017-10-05.rds"))
 # test_model = readRDS(file = paste0(path_rdata, "test_model_2017-10-05.rds"))
 
+
+# test_model[["AEG"]]@model[[1]][[1]][[1]]$model
+# 
+# tm = test_model[["AEG"]]@model[[1]]
+# 
+# compVarImp(tm, scale = TRUE)
+
+
+
+
 eval = lapply(belc, function(be){
   tstat = compRegrTests(models = test_model[[be]]@model[[1]], per_model = TRUE, 
                         per_selector = FALSE, sub_selectors = NULL, 
