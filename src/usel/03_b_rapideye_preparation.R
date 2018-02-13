@@ -51,25 +51,25 @@ if(compute){
   })
   saveRDS(re_snip, file = paste0(path_rdata, "re_plots.rds"))
 } else {
-  re_snip <- readRDS(file = paste0(path_rdata, "re_plots.rds"))
+  re_snip <- readRDS(file = paste0(path_rdata, "preprocessing/re_plots.rds"))
 }
 #check plots im 2.Raster(SEG) das 4.Polygon plot(re_snip[[2]][[4]][[5]]) 
 #checkcorrection<-plotRGB(re_snip[[1]][[1]], r=3, g=2, b=1)
 #rm(checkcorrection)
 # Compute pca for all plots ----------------------------------------------------
-if(compute){
-  re_pca <- lapply(re_snip, function(e){
-    lapply(e, function(s){
-      re_pca <- pca(stack(s), center = TRUE, scale = TRUE, return_raster = TRUE)
-    })
-  })
-  saveRDS(re_pca, file = paste0(path_rdata, "re_pca.rds"))
-} else {
-  re_pca <- readRDS(file = paste0(path_rdata, "re_pca.rds"))
-}
-
-plot(re_pca[[2]][[49]][[2]])
-#summary(re_pca[[2]][[1]])
+# if(compute){
+#   re_pca <- lapply(re_snip, function(e){
+#     lapply(e, function(s){
+#       re_pca <- pca(stack(s), center = TRUE, scale = TRUE, return_raster = TRUE)
+#     })
+#   })
+#   saveRDS(re_pca, file = paste0(path_rdata, "re_pca.rds"))
+# } else {
+#   re_pca <- readRDS(file = paste0(path_rdata, "re_pca.rds"))
+# }
+# 
+# plot(re_pca[[2]][[49]][[2]])
+# #summary(re_pca[[2]][[1]])
 
 # Compute indices for all plots ------------------------------------------------
 if(compute){

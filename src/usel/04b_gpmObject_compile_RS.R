@@ -8,11 +8,11 @@ compute = TRUE
 if(compute){
   vegrel14 <- readRDS(file = paste0(path_rdata, "vegrel14.rds"))
   
-  vegrel15 <- readRDS(file = paste0(path_rdata, "vegrel15.rds"))
+  vegrel15 <- readRDS(file = paste0(path_rdata_pre, "vegrel15.rds"))
   
   meta <- readRDS(paste0(path_rdata, "meta.rds"))
   
-  re <- readRDS(paste0(path_rdata, "re_predictors.rds"))
+  re <- readRDS(paste0(path_rdata_pre, "re_basic_predictors.rds"))
   re_df <- lapply(re, function(e){
     as.data.frame(e)
   })
@@ -29,7 +29,7 @@ if(compute){
                     by.y = c("plotID", "datetime"))
   
   
-  saveRDS(veg_re_g, paste0(path_rdata, "veg_re_g.rds"))
+  saveRDS(veg_re_g, paste0(path_rdata_pre, "veg_re_end04_g.rds"))
 } else {
   veg_re_g <- readRDS(paste0(path_rdata, "veg_re_g.rds"))
 }
@@ -37,7 +37,7 @@ if(compute){
 # Prepare gpm data set used for remote sensing prediction study ----------------
 belc <- c("AEG", "HEG", "SEG")
 veg_re_g_gpm_indv <- lapply(belc, function(b){
-  act_veg_re_g <- veg_re_g[veg_re_g$g_belc == b, ]
+  act_veg_re_g <- veg_re_g[veg_re_g$EP == b, ] #change $EP to $g_belc for original data
   
   col_selector <- which(names(act_veg_re_g) == "EPID")
   
@@ -52,8 +52,11 @@ veg_re_g_gpm_indv <- lapply(belc, function(b){
                          grep("LUI_reg",
                               names(act_veg_re_g))))
   
-  col_precitors <- seq(grep("GLI_mean", names(act_veg_re_g)), 
-                       grep("pca_Long_Run_Low_Grey.Level_Emphasis.b1r50o1_var", names(act_veg_re_g)))
+  # col_precitors <- seq(grep("GLI_mean", names(act_veg_re_g)), 
+  #                      grep("pca_Long_Run_Low_Grey.Level_Emphasis.b1r50o1_var", names(act_veg_re_g)))
+  # lower is for NDVI basic predictors
+  col_precitors <- seq(grep("RE201504_2_mean", names(act_veg_re_g)), 
+                       grep("NDVI_Long_Run_High_Grey.Level_Emphasis.b1r5o1_sd", names(act_veg_re_g)))
   
   col_precitors <- col_precitors[-grep("ep|id|type", tolower(names(act_veg_re_g[, col_precitors])))]
   
@@ -68,14 +71,14 @@ veg_re_g_gpm_indv <- lapply(belc, function(b){
   
   # Clean predictor variables 
   veg_re_g_gpm <- cleanPredictors(x = veg_re_g_gpm, nzv = TRUE,
-                                  highcor = TRUE, cutoff = 0.80)
+                                  highcor = TRUE, cutoff = 0.9) #original 0.8
   
   # Compute resamples following a leave location out approach
-  veg_re_g_gpm <- splitMultRespLSO(x = veg_re_g_gpm, nbr = 1)
+  veg_re_g_gpm <- splitMultRespLSO(x = veg_re_g_gpm, nbr = 5)
 })
 names(veg_re_g_gpm_indv) <- belc
 # save the object with 100 predictors and make training
-saveRDS(veg_re_g_gpm_indv, file = paste0(path_rdata, "veg_rs_100.rds"))
+saveRDS(veg_re_g_gpm_indv, file = paste0(path_rdata_pre, "gpm_obj_NDVI.rds"))
 
 #only use predictors appearing in all 3 exploratories (leaves us eventually with 24 predictors)
 predictors_common <- veg_re_g_gpm_indv[[1]]@meta$input$PREDICTOR_FINAL[veg_re_g_gpm_indv[[1]]@meta$input$PREDICTOR_FINAL %in% veg_re_g_gpm_indv[[2]]@meta$input$PREDICTOR_FINAL]
