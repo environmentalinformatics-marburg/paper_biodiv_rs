@@ -24,13 +24,13 @@ vegrel15 <- readRDS(file = paste0(path_rdata, "preprocessing/vegrel15.rds"))
 plot(vegrel15$SPECRICH, add=T)
 
 mapview(aegrast)
-plotModelCV(x$AEG@model$rf_ffs[[1]][[2]]$model)
+plotModelCV(x$AEG@model$pls_rfe[[1]][[2]]$model$bestTune)
 
 summary(x$AEG@model[[1]][[1]][[1]])
 
 
 
-var_imp <- compVarImp(x$AEG@model$pls_ffs[[1]], scale = FALSE)
+var_imp <- compVarImp(x$AEG@model$pls_rfe[[1]], scale = FALSE)
 
 
 
