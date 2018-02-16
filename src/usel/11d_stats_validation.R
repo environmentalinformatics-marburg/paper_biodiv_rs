@@ -2,11 +2,11 @@
 
 #trying new statistical ways for variance attmpt
 source("D:/UNI/Master/MA/exploratorien/scripts/project_biodiv_rs/src/usel/00_b_set_environment_start_modeltrain.R")
-x<-readRDS(paste0(path_results,"9CV_5models_13pred.rds"))
+x<-readRDS(paste0(path_results,"LUI_training.rds"))
 
 # regressiontests
 tstat<-lapply(x,function(be){
-  tstat <- compRegrTests( be@model$rf_ffs)
+  tstat <- compRegrTests( be@model$pls_ffs)
   return(list(tstat=tstat))
 })
 saveRDS(tstat, paste0(path_stats,"tstat_rf.rds"))
@@ -65,7 +65,7 @@ value_pred_test <-lapply(tstat, function(be){
 
 value_pred_test = do.call("rbind", value_pred_test)
 rownames(value_pred_test) <- NULL
-
+saveRDS(value_pred_test,paste0(path_stats,"LUI_obs_pred_pls_ffs_linear_vis.rds"))
 
 
 # rearrange data.frame for easier visualisation in ggplot
@@ -77,7 +77,7 @@ levels(pls_value_pred_test$variable)<-c("pls_testing_predicted","testing_respons
 levels(rf_value_pred_test$variable)<-c("rf_testing_predicted","testing_response")
 test_pred<-rbind(rf_value_pred_test, pls_value_pred_test)
 
-saveRDS(value_pred_test,paste0(path_stats,"obs_pred_pls_ffs.rds"))
+saveRDS(pls_value_pred_test,paste0(path_stats,"clima_obs_pred_pls_ffs.rds"))
 
 
 # we cal. Rsq/RMSE as "usual" (one R-value per response) "all" or "Rsum"

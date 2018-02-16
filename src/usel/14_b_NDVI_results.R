@@ -51,7 +51,7 @@ pls_org<-ggplot(data= pls[pls$smpl %in% seq(10) & pls$variable=="rmse"& pls$resp
 grid.arrange(pls_NDVI,pls_org, ncol=2)
 
 # observation and prediction
-pls_value_pred_testNDVI<-readRDS(paste0(path_stats,"obs_pred_pls_ffs_NDVI.rds"))
+pls_value_pred_testNDVI<-readRDS(paste0(path_stats,"obs_pred_pls_ffs_LUI.rds"))
 levels(pls_value_pred_testNDVI$response)<-"Species richness"
 pls_value_pred_test<-readRDS(paste0(path_stats,"obs_pred_pls_ffs.rds"))
 pls_value_pred_test<-pls_value_pred_test[pls_value_pred_test$response=="SPECRICH",]
@@ -130,7 +130,8 @@ pls_reg<-ggplot(data=pls_value_pred_test[pls_value_pred_test$response %in% mr_al
 grid.arrange(pls_reg_NDVI,pls_reg, ncol=2)
 
 #-- some statistics
-cor.test(pls_value_pred_test$testing_predicted[pls_value_pred_test$be=="AEG"],pls_value_pred_test$testing_response[pls_value_pred_test$be=="AEG"])$estimate
-summary(lm(testing_predicted~testing_response, data=pls_value_pred_testNDVI[pls_value_pred_testNDVI$be=="AEG",]))
+cor.test(pls_value_pred_test$testing_predicted[pls_value_pred_test$be=="SEG"],
+         pls_value_pred_test$testing_response[pls_value_pred_test$be=="SEG"])$estimate
+summary(lm(testing_predicted~testing_response, data=pls_value_pred_testNDVI[pls_value_pred_testNDVI$be=="SEG",]))
 
 cor.test(pls_value_pred_testNDVI$testing_predicted[pls_value_pred_testNDVI$be=="AEG"],pls_value_pred_testNDVI$testing_response[pls_value_pred_testNDVI$be=="AEG"])$estimate

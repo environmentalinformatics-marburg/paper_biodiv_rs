@@ -93,17 +93,17 @@ tstat_errors$stat = "test"
 ####### TRAINING data--------------------------------------------
 
 mstat <- lapply(x, function(be){
-  mod_r <- lapply(seq(length(be@model$pls_rfe)), function(r){
-    mod_s <- lapply(seq(length(be@model$pls_rfe[[r]])), function(s){
-      if(class(be@model$pls_rfe[[r]][[s]]$model) == "try-error"){
+  mod_r <- lapply(seq(length(be@model$pls_ffs)), function(r){
+    mod_s <- lapply(seq(length(be@model$pls_ffs[[r]])), function(s){
+      if(class(be@model$pls_ffs[[r]][[s]]$model) == "try-error"){
         df <- NULL
       } else {
-        df <- data.frame(be = substr(be@model$pls_rfe[[r]][[s]]$training$SELECTOR[1], 1, 3), 
-                         response = be@model$pls_rfe[[r]][[s]]$response,
-                         r_squared = be@model$pls_rfe[[r]][[s]]$model$results$Rsquared,
-                         #r_squared_sd = be@model$pls_rfe[[r]][[s]]$model$results$RsquaredSD,
-                         rmse = be@model$pls_rfe[[r]][[s]]$model$results$RMSE)
-                         #rmse_sd = be@model$pls_rfe[[r]][[s]]$model$results$RMSESD)
+        df <- data.frame(be = substr(be@model$pls_ffs[[r]][[s]]$training$SELECTOR[1], 1, 3), 
+                         response = be@model$pls_ffs[[r]][[s]]$response,
+                         r_squared = be@model$pls_ffs[[r]][[s]]$model$results$Rsquared,
+                         #r_squared_sd = be@model$pls_ffs[[r]][[s]]$model$results$RsquaredSD,
+                         rmse = be@model$pls_ffs[[r]][[s]]$model$results$RMSE)
+                         #rmse_sd = be@model$pls_ffs[[r]][[s]]$model$results$RMSESD)
       }
       return(df)
     })
@@ -148,6 +148,6 @@ mstat$stat = "train"
 
 # join train and test data together
 errors = rbind(tstat_errors, mstat)
-unique(errors$variable) #check if all calcs are there there
+unique(errors$variable) #check if all calcs are there 
 
-saveRDS(errors,paste0(path_stats,"allnewstats_PLS_RFE_9CV_allRESP.rds"))
+saveRDS(errors,paste0(path_stats,"allnewstats_PLS_FFS_9CV_SPEC_LUI.rds"))

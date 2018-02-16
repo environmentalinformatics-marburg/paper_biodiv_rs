@@ -1,9 +1,9 @@
 source("D:/UNI/Master/MA/exploratorien/scripts/project_biodiv_rs/src/usel/00_b_set_environment_start_modeltrain.R")
 
-pls<-readRDS(paste0(path_stats,"allnewstats_PLS_FFS_9CV_allRESP.rds"))
+pls<-readRDS(paste0(path_stats,"allnewstats_PLS_FFS_9CV_SPEC_LUI.rds"))
 rf<-readRDS(paste0(path_stats,"allnewstats_RF_FFS_9CV_allRESP.rds"))
 
-##mr_all<-c("SPECRICH","LUI_glb")
+#mr_all<-c("SPECRICH","LUI_glb")
 
 # if you have factes and want to change the label, you have to change it in the df
 
@@ -25,14 +25,14 @@ pls_rmse<-ggplot(data= pls[pls$smpl %in% seq(10) & pls$variable=="rmse"& pls$res
       labs(title = "Model performance of PLS",
        x = NULL, y = "RMSE (number of species)", fill = "10 model instances")+
   #scale_fill_manual(values=c("#FFCC99","#CCFFFF","#CCCCFF"))+ #"#FFCC99","#CC99CC","#99FFCC" "#6666CC","#FFCC99","#66CC99"
-  scale_fill_manual(labels=c("validation","prediction"),values=c("#FFCC99","#996666"))+ #values=c("#660033","#CC9900") #f?r boxplot farben
+  scale_fill_manual(labels=c("validation","training"),values=c("#FFCC99","#996666"))+ #values=c("#660033","#CC9900") #f?r boxplot farben
   scale_x_discrete(labels=c("Alb","Hainich","Schorfheide"))+
   facet_wrap(~response, scales = "free")+
   theme(axis.text.x=element_text(size=12),
         axis.text.y=element_text(size=12), axis.title.y=element_text(size=10),
         legend.title=element_text(size=10, face=c("bold")),
         plot.title=element_text(size=12, face="bold", hjust=0.5),
-        legend.justification=c(1,0), legend.position=c(1,0.8))
+        legend.justification=c(1,0), legend.position=c(1,0.7))
 
 rf_rmse<-ggplot(data= rf[rf$smpl %in% seq(10) & rf$variable=="rmse"& rf$response %in% mr_all ,],
                  aes( x= be ,y=value, fill=stat),shape=21,
@@ -55,7 +55,7 @@ grid.arrange(pls_rmse,rf_rmse, ncol=2)
 dev.off()
 ####################
 ## - only predicted values and observed values------------------------------------------------
-pls_value_pred_test<-readRDS(paste0(path_stats,"obs_pred_pls_ffs.rds"))
+pls_value_pred_test<-readRDS(paste0(path_stats,"LUI_obs_pred_pls_ffs.rds"))
 levels(pls_value_pred_test$response)<-c("Species richness","Shannon","Eveness","Land Use Intensity")
 spe<-pls_value_pred_test[pls_value_pred_test$response=="Species richness",]
 
@@ -125,7 +125,7 @@ dev.off()
     #                                    "SEG_singlebest_pred"))
     # write.csv(sp,paste0(path_stats,"freq.csv")) # this is highy unproefessional but im tired, 
     #so i created one column for all the predictors and deleted the other stuff by hand
-pls_fre<-read.csv(paste0(path_stats,"PLS_freq.csv"))
+pls_freq<-read.csv(paste0(path_stats,"PLS_freq.csv"))
 rf_fre<-read.csv(paste0(path_stats,"RF_freq.csv"))
 
 tikz(file = "D:/UNI/Master/MA/Latex/plot_test.tex", width = 3, height = 3, sanitize = T)
@@ -143,7 +143,7 @@ rf<-ggplot(data=rf_fre, aes(x=reorder(best_pred, +value), y= value, fill=variabl
   scale_y_discrete(breaks=c(0,2,4,6,8,10), limits=0:10)+
   labs(x = "", y = "frequency", title = "RF")
 
-pls<-ggplot(data=pls_fre, aes(x=reorder(best_pred, +value), y= value, fill=variable))+
+ggplot(data=pls_fre, aes(x=reorder( best_pred,value), y= value, fill=variable))+
   coord_flip()+
   geom_bar(stat="identity",  position = "dodge",  width=0.15)+
   scale_fill_manual(values=c("#660066","#FFCC33","#CC6600"), labels=c("Alb","Hainich","Schorfheide"), name="" )+
@@ -151,8 +151,9 @@ pls<-ggplot(data=pls_fre, aes(x=reorder(best_pred, +value), y= value, fill=varia
         #axis.text.x=element_text(size=14),
         #axis.text.y=element_text(size=12), axis.title.y=element_text(size=12),
         #legend.text = element_text(size=12))+
-  scale_y_discrete(breaks=c(0,2,4,6,8,10), limits=0:10)+
+ scale_y_discrete(breaks=c(0,2,4,6,8,10), limits=0:10)+
   labs(x = "", y = "frequency", title = "PLS")
+
 grid.arrange(pls, rf, ncol=2)
 #multiplot(pls,rf, cols=2)
 dev.off()

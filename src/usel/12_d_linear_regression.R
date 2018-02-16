@@ -12,8 +12,9 @@ var_pls<-var_pls[var_pls$response=="SPECRICH",]
 var_rf<-readRDS(paste0(path_stats,"var_corel_std_err_rf_ffs.rds"))
 var_rf<-var_rf[var_rf$response=="SPECRICH",]
 
-val_obs_PLS<-readRDS(paste0(path_stats,"obs_pred_pls_ffs.rds"))
+val_obs_PLS<-readRDS(paste0(path_stats,"clima_obs_pred_pls_ffs_linear_vis.rds"))
 val_obs_PLS<-val_obs_PLS[val_obs_PLS$response=="SPECRICH",]
+
 val_obs_RF<-readRDS(paste0(path_stats,"obs_pred_rf_ffs.rds"))
 val_obs_RF<-val_obs_RF[val_obs_RF$response=="SPECRICH",]
 

@@ -41,7 +41,7 @@ best<-x
 r= 1 #replace with the required response
 for(be in names(best)){
   best[[be]] <- lapply(1:10,function(i){ 
-    best[[be]]@model[[4]][[r]][[i]]$model$finalModel$xNames # this is different in ffs und rfe
+    best[[be]]@model[[1]][[r]][[i]]$model$finalModel$xNames # this is different in ffs und rfe
   })
 }
 Specrich_best_pred <- as.data.frame(table(unlist(best))) #this makes a list with all expl. merged! (2 entries!)
@@ -76,10 +76,35 @@ for(be in names(singlebest)){
 }
 specrichsing<-bind_rows(singlebest$AEG[2],singlebest$HEG[2],singlebest$SEG[2])
 specrichsing$response<-"SPECRICH"
-specrichsing$be<-NA
 
-write.csv(specrichsing,paste0(path_stats,"RF_freq.csv"))
+#neat table: use df on HEG col
+# all columns into charcters
+specrichsing$HEG_singlebest_pred<-as.character(specrichsing$HEG_singlebest_pred)
+specrichsing$AEG_singlebest_pred<-as.character(specrichsing$AEG_singlebest_pred)
+specrichsing$SEG_singlebest_pred<-as.character(specrichsing$SEG_singlebest_pred)
+
+  #alle predicctoren in eine Spalte
+
+
+specrichsing$HEG_singlebest_pred[1:2]<-specrichsing$AEG_singlebest_pred[1:2] #prediktoren rüber schieben
+specrichsing$variable[1:2]<-"AEG"
+specrichsing$HEG_Freq[1:2]<-specrichsing$AEG_Freq[1:2] #Frequenz rüber schieben
+
+specrichsing$HEG_singlebest_pred[7:10]<-specrichsing$SEG_singlebest_pred[7:10]
+specrichsing$variable[7:10]<-"SEG"
+specrichsing$HEG_Freq[7:10]<-specrichsing$SEG_Freq[7:10]
+
+specrichsing$variable[3:6]<-"HEG" # neue Spalte für Zuordnung Explo.
+
+#unnötige Zeilen löschen
+specrichsing<-specrichsing[,-c(1:2,5:6)]
+specrichsing$response<-"SPECRICH"
+colnames(specrichsing)[1]<-"best_pred" #umbenennen der Spaltenheader
+colnames(specrichsing)[2]<-"value"
+specrichsing$value<-as.numeric(specrichsing$value)
+
 saveRDS(specrichsing,paste0(path_stats,"pred_frequency_PLS.rds"))
+
 pls_ffs_singleSPEC<-pls_ffs_single1
 rm(pls_ffs_single1)
 pls_ffs_mergeSPEC<-pls_ffs_merge1
