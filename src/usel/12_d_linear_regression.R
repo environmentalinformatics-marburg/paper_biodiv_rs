@@ -141,14 +141,3 @@ cor.test(val_obs_RF$testing_predicted[val_obs_RF$be=="SEG"],val_obs_RF$testing_r
 
 summary(lm(val_obs_RF$value[val_obs_RF$variable=="testing_predicted"]~val_obs_RF$value[val_obs_RF$variable=="testing_predicted"], data=val_obs_RF[val_obs_RF$be=="SEG",])) 
 
-#experiment ob statt aufwendige MDoellierung einfach der mean der obervierten Daten anstelle der predicted values genomen
-# wird und diese danngengeneinadner plotten- Wie liegt der Zusammenhang?
-experiment<-val_obs_PLS
-experiment$testing_predicted<-23.74
-ggplot(data=experiment,
-       aes( x= testing_response ,y=testing_predicted, fill=be, color=be))+
-  geom_point(shape=21,color = "black", stroke=1, size=1)+
-  geom_smooth(method='lm', span= 0.9)+
-  scale_fill_manual(values=c("#660066","#FFCC33","#CC6600"))+
-  scale_color_manual(values=c("#660066","#FFCC33","#CC6600"))+
-  labs(title="Using RF regression", x = "actual", y = "predicted")

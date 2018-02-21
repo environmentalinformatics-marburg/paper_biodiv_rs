@@ -1,5 +1,5 @@
-source("D:/UNI/Master/MA/exploratorien//scripts/00_set_environment.R")
-x<-readRDS(paste0(path_results, "complete_24_11.rds"))
+source("D:/UNI/Master/MA/exploratorien/scripts/project_biodiv_rs/src/usel/00_b_set_environment_start_modeltrain.R")
+x<-readRDS(paste0(path_results, "NDVI_LUI_training.rds"))
 
 library(ggplot2)
 library(reshape2)
@@ -45,7 +45,7 @@ for(be in names(best)){
   })
 }
 Specrich_best_pred <- as.data.frame(table(unlist(best))) #this makes a list with all expl. merged! (2 entries!)
-Specrich_best_pred$response<-"LUI"
+Specrich_best_pred$response<-"SPECRICH"
 Specrich_best_pred[order(Specrich_best_pred$Freq),] #order after most frequently used predictors
 pls_ffs_mergeLUI<-Specrich_best_pred
 # for RFE (me)
@@ -86,15 +86,15 @@ specrichsing$SEG_singlebest_pred<-as.character(specrichsing$SEG_singlebest_pred)
   #alle predicctoren in eine Spalte
 
 
-specrichsing$HEG_singlebest_pred[1:2]<-specrichsing$AEG_singlebest_pred[1:2] #prediktoren rüber schieben
-specrichsing$variable[1:2]<-"AEG"
-specrichsing$HEG_Freq[1:2]<-specrichsing$AEG_Freq[1:2] #Frequenz rüber schieben
+specrichsing$HEG_singlebest_pred[1:4]<-specrichsing$AEG_singlebest_pred[1:4] #prediktoren rüber schieben
+specrichsing$variable[1:4]<-"AEG"
+specrichsing$HEG_Freq[1:4]<-specrichsing$AEG_Freq[1:4] #Frequenz rüber schieben
 
-specrichsing$HEG_singlebest_pred[7:10]<-specrichsing$SEG_singlebest_pred[7:10]
-specrichsing$variable[7:10]<-"SEG"
-specrichsing$HEG_Freq[7:10]<-specrichsing$SEG_Freq[7:10]
+specrichsing$HEG_singlebest_pred[9:12]<-specrichsing$SEG_singlebest_pred[9:12]
+specrichsing$variable[9:12]<-"SEG"
+specrichsing$HEG_Freq[9:12]<-specrichsing$SEG_Freq[9:12]
 
-specrichsing$variable[3:6]<-"HEG" # neue Spalte für Zuordnung Explo.
+specrichsing$variable[5:8]<-"HEG" # neue Spalte für Zuordnung Explo.
 
 #unnötige Zeilen löschen
 specrichsing<-specrichsing[,-c(1:2,5:6)]
@@ -103,7 +103,7 @@ colnames(specrichsing)[1]<-"best_pred" #umbenennen der Spaltenheader
 colnames(specrichsing)[2]<-"value"
 specrichsing$value<-as.numeric(specrichsing$value)
 
-saveRDS(specrichsing,paste0(path_stats,"pred_frequency_PLS.rds"))
+saveRDS(specrichsing,paste0(path_stats,"pred_frequency_PLS_NDVI_LUI.rds"))
 
 pls_ffs_singleSPEC<-pls_ffs_single1
 rm(pls_ffs_single1)
