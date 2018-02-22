@@ -1,3 +1,4 @@
+library(corrplot)
 library(gpm)
 library(reshape2)
 library(parallel)
@@ -145,8 +146,8 @@ mgpm_stats_tstat_rmse = data.frame(belc = mgpm_stats_tstat$belc,
                                    model_response = mgpm_stats_tstat$model_response,
                                    # indp_rmse = mgpm_stats_tstat$rmse, 
                                    # model_rmse = mgpm_stats_tstat$model_RMSE,
-                                   indp_rmse = mgpm_stats_tstat$rmse_norm,
-                                   model_rmse = mgpm_stats_tstat$model_rmse_norm)
+                                   indp_rmse_norm = mgpm_stats_tstat$rmse_norm,
+                                   model_rmse_norm = mgpm_stats_tstat$model_rmse_norm)
 mgpm_stats_tstat_rmse = melt(mgpm_stats_tstat_rmse, idvar = c("belc", "model_response"))
 
 
@@ -164,26 +165,45 @@ q75 = do.call("rbind", q75)
 ok = q75$response[q75$quant_075 <= 0.5]
 
 # Model vs. independent rmse_norm (ok)
+png(filename = paste0("C:/Users/tnauss/permanent/plygrnd/exploratorien/data/manning/training_vs_test_error.png"),
+    width = 1064, height = 693)
 ggplot(data = mgpm_stats_tstat_rmse[mgpm_stats_tstat_rmse$model_response %in% ok,], aes(x = model_response, y = value, fill = variable)) + 
   geom_boxplot() + 
   theme_bw() +
   scale_fill_manual(values = c("#1f78b4", "#33a02c", "#e31a1c")) +
   theme(axis.text.x = element_text(angle = 45, hjust = 1), text = element_text(size=20))
+dev.off()
 
 # Model vs. independent rmse_norm (not ok)
-ggplot(data = mgpm_stats_tstat_rmse[!mgpm_stats_tstat_rmse$model_response %in% ok,], aes(x = model_response, y = value, fill = variable)) + 
+png(filename = paste0("C:/Users/tnauss/permanent/plygrnd/exploratorien/data/manning/training_vs_test_error_not_ok.png"),
+    width = 1064, height = 693)
+ok_wla = c(as.character(ok), "leaf_area")
+ggplot(data = mgpm_stats_tstat_rmse[!mgpm_stats_tstat_rmse$model_response %in% ok_wla,], aes(x = model_response, y = value, fill = variable)) + 
   geom_boxplot() + 
   theme_bw() +
   scale_fill_manual(values = c("#1f78b4", "#33a02c", "#e31a1c")) +
   theme(axis.text.x = element_text(angle = 45, hjust = 1), text = element_text(size=20))
+dev.off()
+
+png(filename = paste0("C:/Users/tnauss/permanent/plygrnd/exploratorien/data/manning/training_vs_test_error_completely_not_ok.png"),
+    width = 1064, height = 693)
+ggplot(data = mgpm_stats_tstat_rmse[mgpm_stats_tstat_rmse$model_response %in% "leaf_area",], aes(x = model_response, y = value, fill = variable)) + 
+  geom_boxplot() + 
+  theme_bw() +
+  scale_fill_manual(values = c("#1f78b4", "#33a02c", "#e31a1c")) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1), text = element_text(size=20))
+dev.off()
+
 
 # Independent rmse_norm for each exploratory
+png(filename = paste0("C:/Users/tnauss/permanent/plygrnd/exploratorien/data/manning/test_error_belc.png"),
+    width = 1064, height = 693)
 ggplot(data = mgpm_stats_tstat[mgpm_stats_tstat$model_response %in% ok,], aes(x = model_response, y = rmse_norm, fill = belc)) + 
   geom_boxplot() + 
   theme_bw() +
   scale_fill_manual(values = c("#1f78b4", "#33a02c", "#e31a1c")) +
   theme(axis.text.x = element_text(angle = 45, hjust = 1), text = element_text(size=20))
-
+dev.off()
 
 scatterplots = lapply(mresps, function(r){
   ggplot(data = mgpm_stats_tstat[mgpm_stats_tstat$model_response == r,], 
@@ -191,15 +211,32 @@ scatterplots = lapply(mresps, function(r){
     geom_point() + 
     geom_smooth(method = "lm") + 
     theme_bw() +
-    scale_fill_manual(values = c("#1f78b4", "#33a02c", "#e31a1c")) +
+    scale_color_manual(values =  c("#1f78b4", "#33a02c", "#e31a1c")) +
     labs(title = r) + 
     theme(axis.text.x = element_text(angle = 45, hjust = 1), text = element_text(size=20))
 })
 names(scatterplots) = mresps
+
+png(filename = paste0("C:/Users/tnauss/permanent/plygrnd/exploratorien/data/manning/train_test_scatter_height.png"),
+    width = 1064, height = 693)
 scatterplots$height
+dev.off()
+
+png(filename = paste0("C:/Users/tnauss/permanent/plygrnd/exploratorien/data/manning/train_test_scatter_seedmass.png"),
+    width = 1064, height = 693)
 scatterplots$seedmass
+dev.off()
+
+png(filename = paste0("C:/Users/tnauss/permanent/plygrnd/exploratorien/data/manning/train_test_scatter_speciesrichness.png"),
+    width = 1064, height = 693)
 scatterplots$speciesrichness
+dev.off()
+
+png(filename = paste0("C:/Users/tnauss/permanent/plygrnd/exploratorien/data/manning/train_test_scatter_SSD.png"),
+    width = 1064, height = 693)
 scatterplots$SSD
+dev.off()
+
 
 lmod_stats = lapply(ok, function(r){
   lmod_r = lapply(names(mgpm), function(b){
@@ -215,3 +252,11 @@ lmod_stats$height
 lmod_stats$seedmass
 lmod_stats$speciesrichness
 lmod_stats$SSD
+
+
+trait_correlation = cor(traits[, 3:11])
+
+png(filename = paste0("C:/Users/tnauss/permanent/plygrnd/exploratorien/data/manning/trait_correlation.png"),
+    width = 1064, height = 693)
+corrplot(trait_correlation)
+dev.off()
