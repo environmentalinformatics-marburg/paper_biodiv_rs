@@ -103,6 +103,13 @@ mgpm = readRDS(file = paste0("C:/Users/tnauss/permanent/plygrnd/exploratorien/da
 
 
 
+var_imp <- compVarImp(mgpm[[1]]@model[[1]], scale = FALSE)
+var_imp_scale <- compVarImp(mgpm[[1]]@model[[1]], scale = TRUE)
+var_imp_plot <- plotVarImp(var_imp)
+var_imp_heat <- plotVarImpHeatmap(var_imp_scale, xlab = "Species", ylab = "Band")
+
+
+
 #### Some stats
 # Model CV
 mgpm_model_stats = lapply(names(mgpm), function(be){
@@ -260,3 +267,4 @@ png(filename = paste0("C:/Users/tnauss/permanent/plygrnd/exploratorien/data/mann
     width = 1064, height = 693)
 corrplot(trait_correlation)
 dev.off()
+
