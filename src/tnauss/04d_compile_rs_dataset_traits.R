@@ -6,60 +6,60 @@ if(Sys.info()["sysname"] == "Windows"){
 }
 
 
-#### Read rapid eye snipets
-s = readRDS(paste0(path_re, "/snipets/indices/re_end04_idx.rds"))
-alb = s[[1]]
-hai = s[[2]]
-sch = s[[3]]
-saveRDS(alb, paste0(path_re, "/snipets/re_aeg_2015-04-24_idx"))
-saveRDS(hai, paste0(path_re, "/snipets/re_hai_2015-04-24_idx"))
-saveRDS(sch, paste0(path_re, "/snipets/re_sch_2015-04-20_idx"))
-
-
-
-s = readRDS(paste0(path_re, "/snipets/indices/re_idx.rds"))
-alb = s[[1]]
-hai = s[[2]]
-sch = s[[3]]
-saveRDS(sch, paste0(path_re, "/snipets/re_sch_2015-04-10_idx"))
-
-
-s = readRDS(paste0(path_re, "/snipets/indices/re03_idx.rds"))
-alb = s[[1]]
-hai = s[[2]]
-sch = s[[3]]
-saveRDS(alb, paste0(path_re, "/snipets/re_aeg_2015-03-19_idx"))
-saveRDS(hai, paste0(path_re, "/snipets/re_hai_2015-03-19_idx"))
-saveRDS(sch, paste0(path_re, "/snipets/re_sch_2015-03-18_idx"))
-
-
-s = readRDS(paste0(path_re, "/snipets/indices/re04_idx.rds"))
-alb = s[[1]]
-hai = s[[2]]
-sch = s[[3]]
-saveRDS(alb, paste0(path_re, "/snipets/re_aeg_2015-04-09_idx"))
-saveRDS(hai, paste0(path_re, "/snipets/re_hai_2015-04-09_idx"))
+# #### Read rapid eye snipets
+# s = readRDS(paste0(path_re, "/snipets/indices/re_end04_idx.rds"))
+# alb = s[[1]]
+# hai = s[[2]]
+# sch = s[[3]]
+# saveRDS(alb, paste0(path_re, "/snipets/re_aeg_2015-04-24_idx"))
+# saveRDS(hai, paste0(path_re, "/snipets/re_hai_2015-04-24_idx"))
 # saveRDS(sch, paste0(path_re, "/snipets/re_sch_2015-04-20_idx"))
-
-
-
-
-
-s = readRDS(paste0(path_re, "/snipets/bands/re04_plots.rds"))
-alb = s[[1]]
-hai = s[[2]]
-sch = s[[3]]
-saveRDS(alb, paste0(path_re, "/snipets/re_aeg_2015-04-09_bands"))
-saveRDS(hai, paste0(path_re, "/snipets/re_hai_2015-04-09_bands"))
-saveRDS(sch, paste0(path_re, "/snipets/re_sch_2015-04-15_bands"))
-
-s = readRDS(paste0(path_re, "/snipets/bands/re_end04_plots.rds"))
-alb = s[[1]]
-hai = s[[2]]
-sch = s[[3]]
-saveRDS(alb, paste0(path_re, "/snipets/re_aeg_2015-04-09_bands"))
-saveRDS(hai, paste0(path_re, "/snipets/re_hai_2015-04-09_bands"))
-saveRDS(sch, paste0(path_re, "/snipets/re_sch_2015-04-15_bands"))
+# 
+# 
+# 
+# s = readRDS(paste0(path_re, "/snipets/indices/re_idx.rds"))
+# alb = s[[1]]
+# hai = s[[2]]
+# sch = s[[3]]
+# saveRDS(sch, paste0(path_re, "/snipets/re_sch_2015-04-10_idx"))
+# 
+# 
+# s = readRDS(paste0(path_re, "/snipets/indices/re03_idx.rds"))
+# alb = s[[1]]
+# hai = s[[2]]
+# sch = s[[3]]
+# saveRDS(alb, paste0(path_re, "/snipets/re_aeg_2015-03-19_idx"))
+# saveRDS(hai, paste0(path_re, "/snipets/re_hai_2015-03-19_idx"))
+# saveRDS(sch, paste0(path_re, "/snipets/re_sch_2015-03-18_idx"))
+# 
+# 
+# s = readRDS(paste0(path_re, "/snipets/indices/re04_idx.rds"))
+# alb = s[[1]]
+# hai = s[[2]]
+# sch = s[[3]]
+# saveRDS(alb, paste0(path_re, "/snipets/re_aeg_2015-04-09_idx"))
+# saveRDS(hai, paste0(path_re, "/snipets/re_hai_2015-04-09_idx"))
+# # saveRDS(sch, paste0(path_re, "/snipets/re_sch_2015-04-20_idx"))
+# 
+# 
+# 
+# 
+# 
+# s = readRDS(paste0(path_re, "/snipets/bands/re04_plots.rds"))
+# alb = s[[1]]
+# hai = s[[2]]
+# sch = s[[3]]
+# saveRDS(alb, paste0(path_re, "/snipets/re_aeg_2015-04-09_bands"))
+# saveRDS(hai, paste0(path_re, "/snipets/re_hai_2015-04-09_bands"))
+# saveRDS(sch, paste0(path_re, "/snipets/re_sch_2015-04-15_bands"))
+# 
+# s = readRDS(paste0(path_re, "/snipets/bands/re_end04_plots.rds"))
+# alb = s[[1]]
+# hai = s[[2]]
+# sch = s[[3]]
+# saveRDS(alb, paste0(path_re, "/snipets/re_aeg_2015-04-09_bands"))
+# saveRDS(hai, paste0(path_re, "/snipets/re_hai_2015-04-09_bands"))
+# saveRDS(sch, paste0(path_re, "/snipets/re_sch_2015-04-15_bands"))
 
 
 
