@@ -3,6 +3,7 @@
 #filepath_base<-"F:/exploratorien/"
 filepath_base<-"C:/exploratorien/exploratorien/"
 path_data <- paste0(filepath_base, "data/")
+path_plots <- paste0(path_data, "plots/")
 path_releves <- paste0(path_data, "releves/")
 path_rdata <- paste0(path_data, "rdata/")
 path_rdata_pre <- paste0(path_rdata,"preprocessing/")
@@ -21,7 +22,7 @@ library(lavaan)
 library(rgeos)
 # library(ggplot2)
 library(mapview)
-library(metTools)  # devtools::install_github("environmentalinformatics-marburg/metTools")
+#library(metTools)  # devtools::install_github("environmentalinformatics-marburg/metTools")
 library(raster)
 library(rgdal)
 library(satellite)
@@ -29,7 +30,7 @@ library(satelliteTools)  #if (!require(RStoolbox)){install.packages("RStoolbox")
 #library(semPlot)
 library(sp)
 library(RStoolbox)
-
+library(rgdal)
 
 # Other settings ---------------------------------------------------------------
 rasterOptions(tmpdir = path_temp)
@@ -38,4 +39,4 @@ saga_cmd <- "D:/UNI/Master/Portable_SAGA/saga_cmd.exe "
 initOTB("D:/UNI/Master/MA/OTB-6.2.0-win64/OTB-6.2.0-win64/bin/")
 
 #für Lab PC
-#initOTB("C:/Users/seligu/Downloads/OTB-6.0.0-win64/bin/")
+#initOTB("C:/Users/uselig/Downloads/OTB-6.6.1-win64/bin/")

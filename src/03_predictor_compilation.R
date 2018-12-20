@@ -55,18 +55,19 @@ re_sr<- lapply(april, function(r){
       simpleratio<-sr(t)
       })
   })
+save(re_sr, file = paste0(path_rdata_pre, "RE_2015_April__SimpleRatio.RData"))
 
 #________________________________________________________________________________
 
 #calculate Haralick für NDVI
-windows <- 5
+windows <- 3
 
 for(i in seq(length(re_idxe))){
   print(paste("Listennummer: ",i))
   minv <- min(unlist(lapply(re_idxe[[i]], function(s){minValue(s$RE_NDVI)})))
   maxv <- max(unlist(lapply(re_idxe[[i]], function(s){maxValue(s$RE_NDVI)})))
   
-  re_pca_ht <-  lapply(re_idxe[[i]], function(s){
+  re_RE_NDVI_ht <-  lapply(re_idxe[[i]], function(s){
     print(paste("Punktnummer: ", i))
     lapply(windows, function(w){
       oth <- otbTexturesHaralick(x=s$RE_NDVI, path_output = path_temp, 
@@ -74,16 +75,38 @@ for(i in seq(length(re_idxe))){
                                  parameters.xyrad=list(c(w,w)),
                                  parameters.xyoff=list(c(1,1)),
                                  parameters.minmax=c(minv, maxv),
-                                 parameters.nbbin = 8,
-                                 texture="all",
+                                 parameters.nbbin = 32,
+                                 texture="simple",
                                  channel = 1)
       names(oth) <- paste0("RE_NDVI_", names(oth))
       return(oth)
     })
   })
-  outfile <- paste0("re_RE_NDVI_h_", substr(names(re_idx[[i]][1]), 1, 3), ".RData")
-  save(re_RE_NDVI_ht, file = paste0(path_rdata_pre, outfile))
+  outfile <- paste0("RE_NDVI_h_simple_", substr(names(re_idxe[[i]][1]), 1, 3), ".rds")
+  saveRDS(re_RE_NDVI_ht, file = paste0(path_rdata_pre, outfile))
 }
 
-# Haralcik für RaosQ
-
+# Haralcik für RaosQ advanced
+for(i in seq(length(re_idxe))){
+  print(paste("Listennummer: ",i))
+  minv <- min(unlist(lapply(re_idxe[[i]], function(s){minValue(s$RaosQ)})))
+  maxv <- max(unlist(lapply(re_idxe[[i]], function(s){maxValue(s$RaosQ)})))
+  
+  re_RaosQ_ht <-  lapply(re_idxe[[i]], function(s){
+    print(paste("Punktnummer: ", i))
+    lapply(windows, function(w){
+      oth <- otbTexturesHaralick(x=s$RaosQ, path_output = path_temp, 
+                                 return_raster = TRUE, 
+                                 parameters.xyrad=list(c(w,w)),
+                                 parameters.xyoff=list(c(1,1)),
+                                 parameters.minmax=c(minv, maxv),
+                                 parameters.nbbin = 32,
+                                 texture="simple", 
+                                 channel = 1)
+      names(oth) <- paste0("RaosQ_", names(oth))
+      return(oth)
+    })
+  })
+  outfile <- paste0("RaosQ_h_simple_", substr(names(re_idxe[[i]][1]), 1, 3), ".rds")
+  saveRDS(re_RaosQ_ht, file = paste0(path_rdata_pre, outfile))
+}
