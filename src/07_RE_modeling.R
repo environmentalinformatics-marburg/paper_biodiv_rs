@@ -34,7 +34,6 @@ for(be in names(veg_re_g_gpm_indv)){
                                  seed_nbr = 11, 
                                  cv_nbr = 5,
                                  var_selection = "indv",
-                                 response_nbr = 1,
                                  filepath_tmp = path_temp)
   veg_re_g_gpm_indv[[be]] <- act_gpm_selected
 }
