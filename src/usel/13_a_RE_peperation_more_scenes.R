@@ -259,4 +259,4 @@ if(compute){
   
   saveRDS(re_df, paste0(path_rdata_pre, "re04_predictors.rds"))
 
-predictors<- readRDS(paste0(path_rdata, "re03_predictors.rds"))
+predictors<- readRDS(paste0(path_rdata_pre, "re03_predictors.rds"))
