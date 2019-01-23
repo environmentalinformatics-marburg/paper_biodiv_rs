@@ -5,7 +5,7 @@ mod1a<-readRDS(paste0(path_results, "5CV_pls_ffs_model_1a.rds"))
 
 ##
 # exract statistic from training results
-mstat <- lapply(mod1aa, function(be){
+mstat <- lapply(mod1a, function(be){
   mod_r <- lapply(seq(length(be@model$pls_ffs)), function(r){
     mod_s <- lapply(seq(length(be@model$pls_ffs[[r]])), function(s){
       if(class(be@model$pls_ffs[[r]][[s]]$model) == "try-error"){
@@ -53,18 +53,18 @@ ggplot(data= mstat[mstat$response %in% "SPECRICH",],
 ## validation values
 # regressiontests
 
-# zum testen
-be<-mod1aa$AEG@model$pls_ffs
+  # # zum testen
+  # be<-mod1aa$AEG@model$pls_ffs
+  # 
+  # be[[1]][[1]]$response # erste Klammer response, 2. Klammer fold (hier 5 CV)
+  # be[[1]][[1]]$testing$RESPONSE
+  # be[[1]][[1]]$testing$PREDICTED$pred
+  # 
+  # # see linear korrelation from one fold validation
+  # plot(mod1a$AEG@model$pls_ffs[[1]][[1]]$testing$RESPONSE,mod1a$AEG@model$pls_ffs[[1]][[1]]$testing$PREDICTED$pred)
 
-be[[1]][[1]]$response # erste Klammer response, 2. Klammer fold (hier 5 CV)
-be[[1]][[1]]$testing$RESPONSE
-be[[1]][[1]]$testing$PREDICTED$pred
 
-# see linear korrelation from one fold validation
-plot(mod1a$AEG@model$pls_ffs[[1]][[1]]$testing$RESPONSE,mod1a$AEG@model$pls_ffs[[1]][[1]]$testing$PREDICTED$pred)
-
-
-vstat <- lapply(mod1aa, function(be){
+vstat <- lapply(mod1a, function(be){
   mod_r <- lapply(seq(length(be@model$pls_ffs)), function(r){
     mod_s <- lapply(seq(length(be@model$pls_ffs[[r]])), function(s){
       if(class(be@model$pls_ffs[[r]][[s]]$model) == "try-error"){
@@ -110,6 +110,11 @@ ggplot(data= vstat[ vstat$response %in% "SPECRICH",],
        x = "observed values", y = "predicted values")
 
 # checking the linear relationship between obs. and val. data
+ # rmse mean for BEs
+aggregate( rmse ~ be, vstat, mean) # for validtaed predictions
+aggregate( rmse ~ be, mstat, mean) # for model predictions
+
+ # Rsq and Correlation
 summary(lm(testing_predicted~testing_response, data=vstat[vstat$be=="AEG"& vstat$response=="SPECRICH",]))#$r.squared 
 cor.test(vstat$testing_predicted[vstat$be=="AEG"& vstat$response=="SPECRICH"],
          vstat$testing_response[vstat$be=="AEG"& vstat$response=="SPECRICH"])$estimate
