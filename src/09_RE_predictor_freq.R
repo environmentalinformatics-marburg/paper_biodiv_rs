@@ -7,7 +7,7 @@ mods<-list.files(path_results, full.names=TRUE,pattern=glob2rx("*rds"))
 # mod<-readRDS(paste0(path_results, "RE_Model_1_pls_ffs.rds"))
 
 #set variable for the specific mod you want the statistic
-x<-5
+x<-6
 mod<-readRDS(mods[x])
 
 # get all predictors of all BE after ffs processing
@@ -77,4 +77,4 @@ frq5<-ggplot(data=pred_frq, aes(x=reorder( best_pred,value), y= value, fill=vari
   scale_y_discrete(breaks=c(0,2,4,6,8,10), limits=0:10)+
   labs(x = "", y = "frequency", title = "PLS Model predictor frequency")
 
-grid.arrange(frq3, frq2,frq5, frq1, frq4, ncol=5)
+grid.arrange(frq0,frq1, frq2,frq3, frq4, frq5)

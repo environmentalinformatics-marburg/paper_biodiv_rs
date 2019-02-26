@@ -5,7 +5,7 @@ mods<-list.files(path_results, full.names=TRUE,pattern=glob2rx("*rds"))
   # mod<-readRDS(paste0(path_results, "RE_Model_1_pls_ffs.rds"))
 
 #set variable for the specific mod you want the statistic
-x<-5
+x<-6
   mod<-readRDS(mods[x])
 
 ##
@@ -53,8 +53,6 @@ m5<-ggplot(data= mstat[mstat$response %in% "SPECRICH",],
   #facet_wrap(~response, scales = "free")+
   labs(title = "Model performance of 5 fold CV PLS",
                  x = "Fold number", y = "RMSE (number of species)")
-
-grid.arrange(m3,m2,m5,m1,m4)
 
 ## validation values
       # regressiontests
@@ -120,7 +118,8 @@ v5<-ggplot(data= vstat[ vstat$response %in% "SPECRICH",],
   labs(title = tit ,
        x = "observed values", y = "predicted values")
 
-grid.arrange(v3,v2,v5,v1,v4)
+grid.arrange(m0,m1,m2,m3,m4,m5)
+grid.arrange(v0,v1,v2,v3,v4,v5)
 
 # checking the linear relationship between obs. and val. data
 # R_squared/RMSE mean and st.dev.
