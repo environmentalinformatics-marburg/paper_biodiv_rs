@@ -6,8 +6,8 @@ library(foreach)
 
 mods<-list.files(paste0(path_rdata,"gpm_models_paper/"), full.names=TRUE,pattern=glob2rx("*Model*"))
 #set variable for the specific mod you want the statistic
-x<-3
-mod_model<-readRDS(mods[x])
+x<-1
+veg_model<-readRDS(mods[x])
 
 for(be in names(veg_model)){
   cl <- makeCluster(3)
@@ -34,5 +34,5 @@ Model_4_CLIMALUI_pls_ffs
 Model_5_RECLIMALUI_pls_ffs
 
 
-saveRDS(veg_model, "Model_0_RE_pls_ffs.rds")
+saveRDS(veg_model, paste0(path_results,"Model_4_CLIMALUI_pls_ffs.rds"))
 
