@@ -33,6 +33,7 @@ library(satelliteTools)  #if (!require(RStoolbox)){install.packages("RStoolbox")
 library(sp)
 library(RStoolbox)
 library(rgdal)
+library(data.table)
 
 # Other settings ---------------------------------------------------------------
 rasterOptions(tmpdir = path_temp)
