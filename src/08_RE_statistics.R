@@ -102,8 +102,23 @@ saveRDS(mstat_all, paste0(path_stats, "overview_models_training_results.rds"))
 #############################################################################################################
 ## SPIELWIESE
 ##############
+
+# get mean RMSE for each model
 v_cor<-vstat_all %>%                
   group_by(model, response, be) %>%    # Group by these variables
   summarise( 
     age.mean = mean(cor) #get mean of correlation coeffients
   )
+
+mstat_mean<-mstat_all %>%                
+  group_by(model, response, be) %>%    # Group by these variables
+  summarise( 
+    rmse.mean = mean(rmse) #get mean of correlation coeffients
+  )
+
+mr<-c("Species richness","Eveness") #only for specrich and eveness
+mstat_mean<-mstat_mean[mstat_mean$response %in% mr,]
+levels(mstat_mean$be)<-c("Alb","Hainich", "Schorfheide")
+#mstat_mean<-mstat_mean[order(mstat_mean$be),]
+#mstat_mean<-mstat_mean[order(mstat_mean$model),]
+write.csv2(mstat_mean, "C:/exploratorien/Latex/publication/mstat_mean.csv")

@@ -14,6 +14,7 @@ levels(vstat_all$response)<-c("Species richness","Shannon","Eveness","Cover Shru
 
 #make a bunch of vectors
 mr_all<-c("Species richness","Shannon","Eveness","Cover Shrubs","Cover bare soil","Biomass")
+
 models=c("Model_5_RECLIMALUI","Model_4_CLIMALUI","Model_3_RELUI","Model_2_LUI","Model_1_RE","Model_0_RE")
 
 # aus dem Skript 08-Statistik kommen 2 Tabellen:
@@ -43,8 +44,8 @@ for (x in seq(models)){
           plot.title=element_text(size=11, face="bold", hjust=0.5),
           legend.justification=c(1,0), legend.position="right")
 }
-plot(m[[1]])
 do.call(grid.arrange,m)
+#grid.arrange(m[[1]],m[[3]], nrow=2)
 
 ##### ABB.2##########
 ####################################################
@@ -79,20 +80,22 @@ modperf = rbind(vstat, mstat)
                       fill=stat),shape=21,
                  stroke=5)+
       geom_boxplot(lwd=0.2)+ # übergreifend für alle folds, dann aber die Beschriftung ändern! 
-      labs(title = "Model performance of PLS",
-           x = NULL, y = "RMSE", fill = "5 model instances")+
+      labs(title = mr_all[x],
+           x = NULL, y = "RMSE", fill = "Model performance")+
       scale_fill_manual(labels=c("validation","training"),values=c("#FFCC99","#996666"))+ #values=c("#660033","#CC9900") #f?r boxplot farben
       scale_x_discrete(labels=c("Alb","Hainich","Schorfheide"))+
       facet_wrap(~model, scales="free_y")+
+      stat_summary(fun.y=mean, geom="point", shape=23, size=2)+
+      #stat_summary(fun.y=mean, geom="text", 
+      #               vjust=+3, aes( label=round(..y.., digits=1)))+
       theme(axis.text.x=element_text(size=8),
             axis.text.y=element_text(size=8),
             legend.title=element_blank(),
             plot.title=element_text(size=10, face="bold", hjust=0.5),
             legend.justification=c(1,0), legend.position="right")
     }
-  # plot(m[[1]])
   do.call(grid.arrange,m)
-
+  #grid.arrange(m[[1]],m[[3]], nrow=2)
 ##### ABB.3##########
 ####################################################
 ##### Scatterplot einfache lineare Regression um die Annäerung der 
@@ -130,6 +133,7 @@ v= list() # create empty list for all models
     #print(v) # only if you want to see each model on single page
   }
 do.call(grid.arrange, v)
+#grid.arrange(v[[1]],v[[3]])
 
 ##### ABB.4##########
 ####################################################
@@ -168,7 +172,6 @@ do.call(grid.arrange, v)
           legend.justification="bottom", legend.position=c(1,0.7))
   #print(i[[x]])
   }
-  #plot(i[[1]])
   do.call(grid.arrange, i)
 
 ##### ABB.5##########
@@ -196,6 +199,9 @@ do.call(grid.arrange, v)
       scale_fill_manual(labels=c("field observations","PLS validation"),values=c("#663333","#FFCC99"))+ #values=c("#660033","#CC9900") #f?r boxplot farben
       scale_x_discrete(labels=c("Alb","Hainich","Schorfheide"))+
       facet_wrap(~model, scales="free_y")+
+      stat_summary(fun.y=mean, geom="text", 
+                   #vjust=-5, 
+                   aes( label=round(..y.., digits=2)))+
       theme(axis.text.x=element_text(size=8),
             axis.text.y=element_text(size=8),
             legend.title=element_blank(),
@@ -209,7 +215,7 @@ do.call(grid.arrange, v)
     
   }
   do.call(grid.arrange, box)
-  
+  #grid.arrange(box[[1]],box[[3]])
   
   ### SPIELWIESE
  
