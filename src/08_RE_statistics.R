@@ -65,7 +65,7 @@ vstat <- lapply(mod, function(be){
                          testing_response = be@model$pls_ffs[[r]][[s]]$testing$RESPONSE,
                          testing_predicted = be@model$pls_ffs[[r]][[s]]$testing$PREDICTED$pred,
                          rmse = RMSE(be@model$pls_ffs[[r]][[s]]$testing$PREDICTED$pred, be@model$pls_ffs[[r]][[s]]$testing$RESPONSE, na.rm = TRUE),
-                         rmseSD= 0, # empty now, will be filled in line 112-114
+                         rmse_sd= 0, # empty now, will be filled in line 112-114
                          cor = cor.test(be@model$pls_ffs[[r]][[s]]$testing$PREDICTED$pred, be@model$pls_ffs[[r]][[s]]$testing$RESPONSE)$estimate
                          )
       }

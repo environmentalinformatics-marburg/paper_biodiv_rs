@@ -1,4 +1,4 @@
-"";"EPID";"be";"response";"testing_response";"testing_predicted";"rmse";"rmseSD";"cor";"smpl";"model"
+"";"EPID";"be";"response";"testing_response";"testing_predicted";"rmse";"rmse_sd";"cor";"smpl";"model"
 "1";"AEG14";"AEG";"SPECRICH";28;20,7986687158417;9,9128809882576;0,949506686381326;0,635558320725207;1;"Model_5_RECLIMALUI"
 "2";"AEG19";"AEG";"SPECRICH";23;28,5292394579319;9,9128809882576;0,949506686381326;0,635558320725207;1;"Model_5_RECLIMALUI"
 "3";"AEG28";"AEG";"SPECRICH";57;38,5511821720362;9,9128809882576;0,949506686381326;0,635558320725207;1;"Model_5_RECLIMALUI"

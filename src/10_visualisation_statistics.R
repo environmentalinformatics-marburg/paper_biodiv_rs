@@ -28,7 +28,7 @@ models=c("Model_5_RECLIMALUI","Model_4_CLIMALUI","Model_3_RELUI","Model_2_LUI","
 m= list() # create empty list for all models
 for (x in seq(models)){
   m[[x]]<-ggplot(data= mstat_all[mstat_all$response %in% mr_all[x],], # füge hinzu wenn nur eine response güwnscht [mstat$response %in% "SPECRICH",]
-                 aes( x= smpl ,y=rmse, fill=be)
+                 aes( x= smpl ,y=rmse_sd, fill=be)
                       #group=be, colour=be)
                       )+
     #geom_line()+
@@ -37,7 +37,7 @@ for (x in seq(models)){
     scale_fill_manual(labels=c("Alb", "Hainich","Schorfheide"),values=c("#660066","#FFCC33","#CC6600"))+
     facet_wrap(~model, scales = "free")+
     labs(title = mr_all[x],
-         x = "Fold number", y = "RMSE")+
+         x = "Fold number", y = expression(RMSE["SD"]))+
     theme(axis.text.x=element_text(size=8),
           axis.text.y=element_text(size=8),
           legend.title=element_blank(),
@@ -56,13 +56,13 @@ do.call(grid.arrange,m)
 # lets merge train and validation results
 # melt the values all in one column
 vstat<-vstat_all #from 08statistics
-vstat[,c(1,4:5,7,8)]<- NULL # remove EPID, response values (predicted and observed), rmse, cor,
+vstat[,c(1,4:5,6,8)]<- NULL # remove EPID, response values (predicted and observed), rmse, cor,
 vstat<-vstat[!duplicated(vstat$rmse),] #remove dupilcaed rmse values
 vstat<-melt(vstat, id.var=c("response","be","smpl", "model"))
 vstat$stat = "test"
 
 mstat<-mstat_all #from 08statistics
-mstat[,c(3,5)]<- NULL # rEMOVE ncomp and Rsquared FROM mSTAT
+mstat[,c(3:5)]<- NULL # rEMOVE ncomp, rmse and Rsquared FROM mSTAT
 mstat<-melt(mstat, id.var=c("response","be","smpl","model"))
 mstat$stat = "train"
 #join train and test data together
@@ -74,14 +74,14 @@ modperf = rbind(vstat, mstat)
 
   m= list() # create empty list for all models
   for (x in seq(models)){
-    m[[x]]<-ggplot(data= modperf[modperf$smpl %in% seq(5) & modperf$variable=="rmse"& 
+    m[[x]]<-ggplot(data= modperf[modperf$smpl %in% seq(5) & modperf$variable=="rmse_sd"& 
                                   modperf$response %in% mr_all[x],], # füge hinzu wenn nur eine response güwnscht [mstat$response %in% "SPECRICH",]
                  aes( x= be ,y=value,
                       fill=stat),shape=21,
                  stroke=5)+
       geom_boxplot(lwd=0.2)+ # übergreifend für alle folds, dann aber die Beschriftung ändern! 
       labs(title = mr_all[x],
-           x = NULL, y = "RMSE", fill = "Model performance")+
+           x = NULL, y = expression(RMSE["SD"]), fill = "Model performance")+
       scale_fill_manual(labels=c("validation","training"),values=c("#FFCC99","#996666"))+ #values=c("#660033","#CC9900") #f?r boxplot farben
       scale_x_discrete(labels=c("Alb","Hainich","Schorfheide"))+
       facet_wrap(~model, scales="free_y")+
@@ -122,7 +122,9 @@ v= list() # create empty list for all models
       scale_fill_manual(values=c("#660066","#FFCC33","#CC6600"),
                         name="",
                         labels=c("Alb","Hainich","Schorfheide"))+
-      facet_wrap(~model, scales = "free")+
+      facet_wrap(~model, scales = "fixed", nrow = 1)+
+      #coord_cartesian(expand = FALSE)+
+      scale_x_discrete( expand=waiver())+
       theme(axis.text.x=element_text(size=8),
             axis.text.y=element_text(size=8),
             legend.title=element_blank(),
@@ -130,6 +132,7 @@ v= list() # create empty list for all models
             legend.justification=c(1,0), legend.position="right")+
       labs(title = mr_all[x] ,
            x = "observed values", y = "predicted values")
+      coord_equal()
     #print(v) # only if you want to see each model on single page
   }
 do.call(grid.arrange, v)
