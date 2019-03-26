@@ -93,6 +93,24 @@ vstat <- lapply(mod, function(be){
 rm(mstat,vstat) #remove temporary looping dfs
 }
 
+# get RMSE_SD also
+{aeg <- mod$AEG@data$input[, c("EPID","SPECRICH", "SHANNON", "EVENESS", "cover_shrubs_pc", "cover_bare_soil_pc", "biomass_g")]
+aeg$EPID<-"AEG"
+heg <- mod$HEG@data$input[, c("EPID","SPECRICH", "SHANNON", "EVENESS", "cover_shrubs_pc", "cover_bare_soil_pc", "biomass_g")]
+heg$EPID<-"HEG"
+seg <- mod$SEG@data$input[, c("EPID","SPECRICH", "SHANNON", "EVENESS", "cover_shrubs_pc", "cover_bare_soil_pc", "biomass_g")]
+seg$EPID<-"SEG"
+
+inda<- rbind(aeg,heg,seg)
+input_melt <- melt(inda)
+sdobs<-aggregate( .~EPID+variable, data=input_melt, sd, na.rm=TRUE)
+
+mstat_all<- merge(mstat_all, sdobs, by.x=c("be","response"), by.y=c("EPID","variable"))
+mstat_all$rmse_sd<-mstat_all$rmse/mstat_all$value 
+mstat_all$value<-NULL
+rm(aeg,heg,seg,inda,input_melt,sdobs)}
+####################
+
 write.csv2(vstat_all, paste0(path_stats, "overview_models_validation_results.csv"))
 saveRDS(vstat_all, paste0(path_stats, "overview_models_validation_results.rds"))
 write.csv2(mstat_all, paste0(path_stats, "overview_models_training_results.csv"))
